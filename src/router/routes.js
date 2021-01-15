@@ -9,7 +9,8 @@ const routes = [
       { path: '/admin', component: () => import('pages/AdminIndex.vue') },
       { path: '/form', component: () => import('pages/FormCaja.vue') },
       { path: '/tickets', component: () => import('pages/AdminTickets.vue') },
-      { path: '/productos', component: () => import('pages/AdminProductos.vue') }
+      { path: '/productos', component: () => import('pages/AdminProductos.vue')},
+      { path: '/addProducto', component: () => import('pages/AdminAddProducto.vue') }
     ]
   },
 

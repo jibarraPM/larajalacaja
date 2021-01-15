@@ -1,6 +1,11 @@
 <template>
   <q-page class="">
     <div class="q-pa-md">
+
+      <div class="q-pa-md q-gutter-sm">
+    <q-btn color="primary" icon="inventory_2" label="Agregar Producto" to='addProducto'/>
+  </div>
+
     <q-table
       title="Productos"
       :data="data"
@@ -10,34 +15,39 @@
     >
       <template v-slot:body="props">
         <q-tr :props="props">
-          <q-td key="desc" :props="props">
+          <q-td key="id" :props="props">{{ props.row.id }}</q-td>
+          <q-td key="nombre" :props="props">
             {{ props.row.name }}
-            <q-popup-edit v-model="props.row.name">
+            <q-popup-edit v-model="props.row.name" title="Actualizar Producto" buttons label-set="Ok"
+          label-cancel="Cancelar">
               <q-input v-model="props.row.name" dense autofocus counter />
             </q-popup-edit>
           </q-td>
-          <q-td key="calories" :props="props">
-            {{ props.row.calories }}
-            <q-popup-edit v-model="props.row.calories" title="Update calories" buttons>
-              <q-input type="number" v-model="props.row.calories" dense autofocus />
+          <q-td key="cantidad" :props="props">
+            {{ props.row.cantidad }}
+            <q-popup-edit v-model="props.row.cantidad" title="Actualizar Cantidad" buttons label-set="Ok"
+          label-cancel="Cancelar">
+              <q-input type="number" v-model="props.row.cantidad" dense autofocus />
             </q-popup-edit>
           </q-td>
-          <q-td key="fat" :props="props">
-            <div class="text-pre-wrap">{{ props.row.fat }}</div>
-            <q-popup-edit v-model="props.row.fat">
-              <q-input type="textarea" v-model="props.row.fat" dense autofocus />
+          <q-td key="precioCompra" :props="props">
+            <div class="text-pre-wrap">{{ props.row.precioCompra }}</div>
+            <q-popup-edit v-model="props.row.precioCompra"  title="Actualizar Precio Compra" buttons label-set="Ok"
+          label-cancel="Cancelar">
+              <q-input type="number" v-model="props.row.precioCompra" dense autofocus />
             </q-popup-edit>
           </q-td>
-          <q-td key="carbs" :props="props">
-            {{ props.row.carbs }}
-            <q-popup-edit v-model="props.row.carbs" title="Update carbs" buttons persistent>
-              <q-input type="number" v-model="props.row.carbs" dense autofocus hint="Use buttons to close" />
+          <q-td key="precioVenta" :props="props">
+            {{ props.row.precioVenta }}
+            <q-popup-edit v-model="props.row.precioVenta"  title="Actualizar Precio Venta" buttons label-set="Ok"
+          label-cancel="Cancelar">
+              <q-input type="number" v-model="props.row.precioVenta"  />
             </q-popup-edit>
           </q-td>
-          <q-td key="protein" :props="props">{{ props.row.protein }}</q-td>
-          <q-td key="sodium" :props="props">{{ props.row.sodium }}</q-td>
-          <q-td key="calcium" :props="props">{{ props.row.calcium }}</q-td>
-          <q-td key="iron" :props="props">{{ props.row.iron }}</q-td>
+          <q-td key="utilidad" :props="props">{{ props.row.utilidad }}</q-td>
+          <q-td key="costoInventario" :props="props">{{ props.row.costoInventario }}</q-td>
+          <q-td key="valorInventario" :props="props">{{ props.row.valorInventario }}</q-td>
+          <q-td key="gananciaNeta" :props="props">{{ props.row.gananciaNeta }}</q-td>
         </q-tr>
       </template>
     </q-table>
@@ -51,126 +61,128 @@ export default {
   data () {
     return {
       columns: [
+        { name: 'id', label: 'ID', field: 'Id' },
         {
-          name: 'desc',
+          name: 'nombre',
           required: true,
           label: 'Nombre',
           align: 'left',
           field: row => row.name,
           format: val => `${val}`,
-          sortable: true
+          sortable: true 
         },
-        { name: 'calories', align: 'center', label: 'Cantidad', field: 'calories', sortable: true },
-        { name: 'fat', label: 'Fat (g)', field: 'fat', sortable: true, style: 'width: 10px' },
-        { name: 'carbs', label: 'Carbs (g)', field: 'carbs' },
-        { name: 'protein', label: 'Protein (g)', field: 'protein' },
-        { name: 'sodium', label: 'Sodium (mg)', field: 'sodium' },
-        { name: 'calcium', label: 'Calcium (%)', field: 'calcium', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) },
-        { name: 'iron', label: 'Iron (%)', field: 'iron', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) }
+        { name: 'cantidad', align: 'center', label: 'Cantidad', field: 'cantidad', sortable: true },
+        { name: 'precioCompra', label: 'Precio Compra', field: 'precioCompra', sortable: true, style: 'width: 10px' },
+        { name: 'precioVenta', label: 'Precio Venta', field: 'precioVenta', sortable: true},
+        { name: 'utilidad', label: '% Utilidad', field: 'utilidad', sortable: true },
+        { name: 'costoInventario', label: 'Costo en Inventario', field: 'costoInventario', sortable: true },
+        { name: 'valorInventario', label: 'Valor Inventario', field: 'valorInventario', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) },
+        { name: 'gananciaNeta', label: 'Ganancia Neta', field: 'gananciaNeta', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) }
       ],
       data: [
         {
           name: 'Frozen Yogurt',
-          calories: 159,
-          fat: 6.0,
-          carbs: 24,
-          protein: 4.0,
-          sodium: 87,
-          calcium: '14%',
-          iron: '1%'
+          cantidad: 159,
+          precioCompra: 6.0,
+          precioVenta: 24,
+          id: 4.0,
+          costoInventario: 87,
+          valorInventario: '14%',
+          gananciaNeta: '1%',
+          utilidad:'12%'
         },
         {
           name: 'Ice cream sandwich',
-          calories: 237,
-          fat: 9.0,
-          carbs: 37,
-          protein: 4.3,
-          sodium: 129,
-          calcium: '8%',
-          iron: '1%'
+          cantidad: 237,
+          precioCompra: 9.0,
+          precioVenta: 37,
+          id: 4.3,
+          costoInventario: 129,
+          valorInventario: '8%',
+          gananciaNeta: '1%'
         },
         {
           name: 'Eclair',
-          calories: 262,
-          fat: 16.0,
-          carbs: 23,
-          protein: 6.0,
-          sodium: 337,
-          calcium: '6%',
-          iron: '7%'
+          cantidad: 262,
+          precioCompra: 16.0,
+          precioVenta: 23,
+          id: 6.0,
+          costoInventario: 337,
+          valorInventario: '6%',
+          gananciaNeta: '7%'
         },
         {
           name: 'Cupcake',
-          calories: 305,
-          fat: 3.7,
-          carbs: 67,
-          protein: 4.3,
-          sodium: 413,
-          calcium: '3%',
-          iron: '8%'
+          cantidad: 305,
+          precioCompra: 3.7,
+          precioVenta: 67,
+          id: 4.3,
+          costoInventario: 413,
+          valorInventario: '3%',
+          gananciaNeta: '8%'
         },
         {
           name: 'Gingerbread',
-          calories: 356,
-          fat: 16.0,
-          carbs: 49,
-          protein: 3.9,
-          sodium: 327,
-          calcium: '7%',
-          iron: '16%'
+          cantidad: 356,
+          precioCompra: 16.0,
+          precioVenta: 49,
+          id: 3.9,
+          costoInventario: 327,
+          valorInventario: '7%',
+          gananciaNeta: '16%'
         },
         {
           name: 'Jelly bean',
-          calories: 375,
-          fat: 0.0,
-          carbs: 94,
-          protein: 0.0,
-          sodium: 50,
-          calcium: '0%',
-          iron: '0%'
+          cantidad: 375,
+          precioCompra: 0.0,
+          precioVenta: 94,
+          id: 0.0,
+          costoInventario: 50,
+          valorInventario: '0%',
+          gananciaNeta: '0%'
         },
         {
           name: 'Lollipop',
-          calories: 392,
-          fat: 0.2,
-          carbs: 98,
-          protein: 0,
-          sodium: 38,
-          calcium: '0%',
-          iron: '2%'
+          cantidad: 392,
+          precioCompra: 0.2,
+          precioVenta: 98,
+          id: 0,
+          costoInventario: 38,
+          valorInventario: '0%',
+          gananciaNeta: '2%'
         },
         {
           name: 'Honeycomb',
-          calories: 408,
-          fat: 3.2,
-          carbs: 87,
-          protein: 6.5,
-          sodium: 562,
-          calcium: '0%',
-          iron: '45%'
+          cantidad: 408,
+          precioCompra: 3.2,
+          precioVenta: 87,
+          id: 6.5,
+          costoInventario: 562,
+          valorInventario: '0%',
+          gananciaNeta: '45%'
         },
         {
           name: 'Donut',
-          calories: 452,
-          fat: 25.0,
-          carbs: 51,
-          protein: 4.9,
-          sodium: 326,
-          calcium: '2%',
-          iron: '22%'
+          cantidad: 452,
+          precioCompra: 25.0,
+          precioVenta: 51,
+          id: 4.9,
+          costoInventario: 326,
+          valorInventario: '2%',
+          gananciaNeta: '22%'
         },
         {
           name: 'KitKat',
-          calories: 518,
-          fat: 26.0,
-          carbs: 65,
-          protein: 7,
-          sodium: 54,
-          calcium: '12%',
-          iron: '6%'
+          cantidad: 518,
+          precioCompra: 26.0,
+          precioVenta: 65,
+          id: 7,
+          costoInventario: 54,
+          valorInventario: '12%',
+          gananciaNeta: '6%'
         }
       ]
     }
-  }
+  },
 }
 </script>
