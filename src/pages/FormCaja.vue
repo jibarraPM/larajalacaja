@@ -123,7 +123,7 @@
                 }
               "
               color="primary"
-              label="Continue"
+              label="Continuar"
             />
           </q-stepper-navigation>
         </q-step>
@@ -135,7 +135,7 @@
           icon="widgets"
           :done="done2"
         >
-          <div class="q-gutter-y-md column " style="max-width: ">
+          <div class="q-gutter-y-md column">
             <q-input
               outlined
               v-model="color"
@@ -426,13 +426,13 @@
                 }
               "
               color="primary"
-              label="Continue"
+              label="Continuar"
             />
             <q-btn
               flat
               @click="step = 1"
               color="primary"
-              label="Back"
+              label="Volver"
               class="q-ml-sm"
             />
           </q-stepper-navigation>
@@ -464,17 +464,25 @@
               <q-card-section class="q-pt-none">
                 <div class="q-pa-md">
                   <div class="q-gutter-sm">
-                    <q-radio v-model="tipoCaja" val="Caja Ligth" label="Caja Ligth" />
+                    <q-radio
+                      v-model="tipoCaja"
+                      val="Caja Ligth"
+                      label="Caja Ligth"
+                    />
                     <q-radio
                       v-model="tipoCaja"
                       val="Caja Medium"
                       label="Caja Medium"
                     />
-                    <q-radio v-model="tipoCaja" val="Caja Premium" label="Caja Premium" />
+                    <q-radio
+                      v-model="tipoCaja"
+                      val="Caja Premium"
+                      label="Caja Premium"
+                    />
                   </div>
 
                   <div class="q-px-sm">
-                    Your selection is: <strong>{{ tipoCaja }}</strong>
+                    tu seleccion es: <strong>{{ tipoCaja }}</strong>
                   </div>
                 </div>
               </q-card-section>
@@ -505,7 +513,8 @@
                   Direccion de Entrega
                 </div>
               </q-card-section>
-              <div class="q-pa-md">
+
+              <div class="q-pa-md q-gutter-sm" >
                 <div class="q-gutter-sm">
                   <q-select
                     v-model="region"
@@ -543,17 +552,51 @@
                 <q-icon name="phonelink_ring" />
               </template>
             </q-input>
+
+            <div class="q-pa-md q-gutter-sm">
+              <q-dialog v-model="alert">
+                <q-card style="width: 400px; max-width: 80vw;">
+                  <q-card >
+                    <q-card-section>
+                      <div class="text-h6">Informacion del Pedido</div>
+                      <div class="text-subtitle2">Datos de envio</div>
+                    </q-card-section>
+                    <div class="q-pa-md">
+                      <p>Nombre Destinatario: {{ nombreFestejado }}</p>
+                      <p>Fecha de entrega: {{ fechaEntrega }}</p>
+                      <p>Region: {{ region.label }}</p>
+                      <p>Comuna: {{ comuna.lavel }}</p>
+                      <p>Direccion de envio {{ direccionEnvio }}</p>
+                      <p>Telefono de envio: {{ telefonoEnvio }}</p>
+                    </div>
+                    <q-card-section>
+                      <div class="text-subtitle2">Datos de La Caja</div>
+                    </q-card-section>
+                    <div class="q-pa-md">
+                      <p>Motivo: {{ motivo }}</p>
+                      <p>Para quien: {{ paraQuien }}</p>
+                      <p>Mensaje: {{ mensaje }}</p>
+                    </div>
+                  </q-card>
+
+                  <q-card-actions align="right">
+                    <q-btn flat label="OK" color="primary" v-close-popup />
+                  </q-card-actions>
+                </q-card>
+              </q-dialog>
+            </div>
           </div>
 
           <q-stepper-navigation>
-            <q-btn color="primary" @click="done3 = true" label="Finalizar" />
+            <q-btn label="Detalles" color="primary" @click="alert = true" />
             <q-btn
               flat
               @click="step = 2"
               color="primary"
-              label="Back"
+              label="Volver"
               class="q-ml-sm"
             />
+            <q-btn color="primary" @click="done3 = true" label="Finalizar" />
           </q-stepper-navigation>
         </q-step>
       </q-stepper>
@@ -573,8 +616,8 @@ export default {
       done3: false,
 
       nombreFestejado: "",
-      motivo: "Cumpleaños",
-      paraQuien: "Mujer",
+      motivo: "",
+      paraQuien: "",
       nacimiento: "",
       color: "",
 
@@ -590,7 +633,7 @@ export default {
       mensaje: "",
 
       nombreComprador: "",
-      tipoCaja: 'Caja Medium',
+      tipoCaja: "Caja Medium",
       fechaEntrega: "",
       region: "",
       comuna: "",
@@ -600,7 +643,9 @@ export default {
       apiComunas: [],
       selecionComuna: [],
       direccionEnvio: "",
-      telefonoEnvio: ""
+      telefonoEnvio: "",
+
+      alert: false
     };
   },
 
