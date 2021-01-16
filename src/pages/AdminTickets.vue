@@ -25,7 +25,9 @@
         <q-tr :props="props">
           <q-td auto-width>
             <q-btn size="sm" color="primary" round dense @click="props.expand = !props.expand" :icon="props.expand ? 'remove' : 'add'" />
+            <q-btn size="sm" color="primary" round dense icon="edit"/>
           </q-td>
+          
           <q-td
             v-for="col in props.cols"
             :key="col.name"
@@ -36,6 +38,7 @@
         </q-tr>
         <q-tr v-show="props.expand" :props="props">
           <q-td colspan="100%">
+
             <div class="text-left">Detalles del Ticket: {{ props.row.name }}.</div>
           </q-td>
         </q-tr>
@@ -69,8 +72,8 @@ export default {
         { name: 'protein', label: 'Correo', field: 'protein' },
         
         { name: 'sodium', label: 'Dirección', field: 'sodium' },
-        { name: 'calcium', label: 'Fecha Entrega', field: 'calcium', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) },
-        { name: 'iron', label: 'Acciones', field: 'iron', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) }
+        { name: 'calcium', label: 'Fecha Ingreso', field: 'calcium', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) },
+        { name: 'iron', label: 'Fecha Entrega', field: 'iron', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) }
       ],
       data: [
         {
