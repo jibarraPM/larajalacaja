@@ -277,7 +277,7 @@
   </div>
 
         <q-stepper-navigation>
-          <q-btn @click="step = 2" color="primary" label="Agregar Producto" />
+          <q-btn @click="crearProducto" color="primary" label="Agregar Producto" />
           <q-btn flat @click="step = 1" color="primary" label="Volver" class="q-ml-sm" />
         </q-stepper-navigation>
       </q-step>
@@ -286,6 +286,9 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+import axios from 'axios'
+
 export default {
   data () {
     return {
@@ -301,6 +304,34 @@ export default {
       preferencia: [],
       petLover: []
 
+    }
+  },
+  methods:{
+    ...mapActions({
+      obtenerConfig: 'auth/obtenerConfig',
+    }),
+    crearProducto(){
+      var url = 'productos'
+      let post = {
+        "nombre": this.nombre,
+        "cantidad": this.cantidad,
+        "precioCompra": this.precioCompra,
+        "precioVenta": this.precioVenta,
+        "categorias": this.categorias,
+        "pasatiempos": this.pasatiempo,
+        "brindis": this.brindis,
+        "preferencias": this.preferencia,
+        "mascotas": this.petLover
+      };
+      axios.post(url,post,this.obtenerConfig)
+      .then((result)=>{
+          if (result.data.success == true)  {
+              console.log(result);
+          }
+      })
+      .catch((error)=>{
+          console.log(error);
+      });
     }
   }
 }
