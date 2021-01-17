@@ -78,7 +78,7 @@
         a continuacion tendra que categorizar el inventario correspondiente a la categoria a la cual pertenece
 
         <div class="q-pa-md   q-gutter-md">
-     <q-card flat bordered class="my-card">
+          <q-card flat bordered class="my-card">
               <q-card-section>
                 <div class="text-h6">
                   Caractegorias
@@ -88,41 +88,13 @@
               <q-card-section class="q-pt-none">
                 <div class="q-pa-md">
                   <div class="q-gutter-sm">
-                    <q-checkbox
-                      v-model="categorias"
-                      val="Rockers"
-                      label="Rockers"
-                    />
-                    <q-checkbox
-                      v-model="categorias"
-                      val="Carreter@"
-                      label="Carreter@"
-                    />
-                    <q-checkbox
-                      v-model="categorias"
-                      val="Trabajolic@"
-                      label="Trabajolic@"
-                    />
-                    <q-checkbox
-                      v-model="categorias"
-                      val="Romántic@"
-                      label="Romántic@"
-                    />
-                    <q-checkbox
-                      v-model="categorias"
-                      val="Pretencios@"
-                      label="Pretencios@"
-                    />
-                    <q-checkbox
-                      v-model="categorias"
-                      val="Organizad@"
-                      label="Organizad@"
-                    />
-                    <q-checkbox
-                      v-model="categorias"
-                      val="Sexy"
-                      label="Sexy"
-                    />
+                    <div v-for="categoria in listaCategorias">
+                      <q-checkbox
+                        v-model="categoria.id"
+                        :val="categoria.nombre"
+                        :label="categoria.nombre"
+                      />
+                    </div>
                   </div>
                 </div>
 
@@ -363,6 +335,7 @@ export default {
               this.listaCategoriasAux[index]=categoria;
           }
           this.listaCategorias = this.listaCategoriasAux;
+          console.log(this.listaCategorias);
         }
       })
       .catch((error) => {
