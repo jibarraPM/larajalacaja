@@ -302,9 +302,24 @@ export default {
       pasatiempo: [],
       brindis: [],
       preferencia: [],
-      petLover: []
+      petLover: [],
 
+      //lista de objetos que son dinamicos, estos provenientes de la api
+      listaCategorias:[],
+      listaPasatiempos:[],
+      listaBrindis:[],
+      listaPreferencias:[],
+      listaMascotas:[]
     }
+  },
+  beforeMount(){
+    //Nota: estas funciones se pueden demorar en ejecutarse, esto quiere decir que no espera a que termine para mostrar los datos, dado a que es a 2 tiempos
+    //me refiero a que primero llena los datos como nombre y cantidad, no deberia darse cuenta de esto, el tiempo es relativamente corto, depende del internet obviamente
+    this.obtenerCategorias();
+    this.obtenerPasatiempos();
+    this.obtenerBrindis();
+    this.obtenerPreferencias();
+    this.obtenerMascotas();
   },
   methods:{
     ...mapActions({
@@ -332,7 +347,113 @@ export default {
       .catch((error)=>{
           console.log(error);
       });
-    }
+    },
+    obtenerCategorias(){
+      var url = 'categorias';
+      this.listaCategoriasAux = [];
+      axios.get(url,this.obtenerConfig)
+      .then((result)=>{
+        if (result.data.success == true) {
+          for (let index = 0; index < result.data.data.categorias.length; index++) {
+              const element = result.data.data.categorias[index];
+              let categoria = {
+                  id: element.id,
+                  nombre: element.nombre,
+              };
+              this.listaCategoriasAux[index]=categoria;
+          }
+          this.listaCategorias = this.listaCategoriasAux;
+        }
+      })
+      .catch((error) => {
+          console.log(error);
+      });
+    },
+    obtenerPasatiempos(){
+      var url = 'pasatiempos';
+      this.listaPasatiemposAux = [];
+      axios.get(url,this.obtenerConfig)
+      .then((result)=>{
+        if (result.data.success == true) {
+          for (let index = 0; index < result.data.data.pasatiempos.length; index++) {
+              const element = result.data.data.pasatiempos[index];
+              let pasatiempo = {
+                  id: element.id,
+                  nombre: element.nombre,
+              };
+              this.listaPasatiemposAux[index]=pasatiempo;
+          }
+          this.listaPasatiempos = this.listaPasatiemposAux;
+        }
+      })
+      .catch((error) => {
+          console.log(error);
+      });
+    },
+    obtenerBrindis(){
+      var url = 'brindis';
+      this.listaBrindisAux = [];
+      axios.get(url,this.obtenerConfig)
+      .then((result)=>{
+        if (result.data.success == true) {
+          for (let index = 0; index < result.data.data.brindis.length; index++) {
+              const element = result.data.data.brindis[index];
+              let brindi = {
+                  id: element.id,
+                  nombre: element.nombre,
+              };
+              this.listaBrindisAux[index]=brindi;
+          }
+          this.listaBrindis = this.listaBrindisAux;
+        }
+      })
+      .catch((error) => {
+          console.log(error);
+      });
+    },
+    obtenerPreferencias(){
+      var url = 'preferencias';
+      this.listaPreferenciasAux = [];
+      axios.get(url,this.obtenerConfig)
+      .then((result)=>{
+        if (result.data.success == true) {
+          for (let index = 0; index < result.data.data.preferencias.length; index++) {
+              const element = result.data.data.preferencias[index];
+              let preferencia = {
+                  id: element.id,
+                  nombre: element.nombre,
+              };
+              this.listaPreferenciasAux[index]=preferencia;
+          }
+          this.listaPreferencias = this.listaPreferenciasAux;
+        }
+      })
+      .catch((error) => {
+          console.log(error);
+      });
+    },
+    obtenerMascotas(){
+      var url = 'mascotas';
+      this.listaMascotasAux = [];
+      axios.get(url,this.obtenerConfig)
+      .then((result)=>{
+        if (result.data.success == true) {
+          for (let index = 0; index < result.data.data.mascotas.length; index++) {
+              const element = result.data.data.mascotas[index];
+              let mascota = {
+                  id: element.id,
+                  nombre: element.nombre,
+              };
+              this.listaMascotasAux[index]=mascota;
+          }
+          this.listaMascotas = this.listaMascotasAux;
+        }
+      })
+      .catch((error) => {
+          console.log(error);
+      });
+    },
+
   }
 }
 </script>
