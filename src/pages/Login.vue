@@ -13,12 +13,12 @@
 
       <q-card-section class="q-pt-none">
         <div class="q-gutter-y-md column">
-          <q-input outlined v-model="email" type="email">
+          <q-input outlined v-model="user.email" type="email">
             <template v-slot:prepend>
               <q-icon name="email" />
             </template>
           </q-input>
-          <q-input outlined v-model="pass" type="password">
+          <q-input outlined v-model="user.password" type="password">
             <template v-slot:prepend>
               <q-icon name="vpn_key" />
             </template>
@@ -30,7 +30,7 @@
 
       <q-card-section>
         <div class="center column	">
-          <q-btn push color="primary" label="Ingresar" @click="ingresar" />
+          <q-btn push color="primary" label="Ingresar" @click="submit" />
         </div>
       </q-card-section>
     </q-card>
@@ -38,15 +38,42 @@
 </template>
 
 <script>
+import {mapActions, mapGetters} from 'vuex'
+
+
 export default {
-  name: "PageIndex",
-  data () {
-    return {
-      email: '',
-      pass: ''
+    name: "PageIndex",
+    data() {
+      return {
+          user: {
+              email: '', 
+              password: '',
+          }
+      }
+    },
+    computed: {
+        ...mapGetters({
+            token: 'auth/authenticated'
+        })
+    },
+    methods: {
+      ...mapActions({
+        login: 'auth/login'
+      }),
+      submit(){
+          this.login(this.user).then(() => {
+            if(this.token!=null){
+              this.$router.replace({
+                  name: 'admin'
+              })
+            }else{
+              console.log('error en datos ingresados')
+            }
+          })
+      }
     }
-  }
-};
+}
+
 </script>
 
 <style lang="sass" scoped>

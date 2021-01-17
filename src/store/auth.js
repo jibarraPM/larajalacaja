@@ -1,21 +1,16 @@
 import axios from 'axios'
-export default {
-    namespaced: true,
+import { LocalStorage, SessionStorage } from 'quasar'
 
+//xebaelvemgador@gmail.com
+//Sterek64
+export default {
+
+    namespaced: true,
     state: {
         token: null,
-        user: {
-            "name": null,
-            "email": null,
-            "role": null
-        },
-        config: {
-            headers: {
-                Authorization: ''
-            }
-        }
+        user: null,
+        config: null
     },
-
     getters: {
         authenticated(state) {
             return state.token
@@ -28,54 +23,65 @@ export default {
         }
     },
     mutations: {
-        SET_TOKEN(state, token) {
-            state.config.headers.Authorization = 'Bearer ' + token;
-            state.token = token
+        setToken(state, payload) {
+            state.token = payload
         },
-        SET_USER(state, user) {
-            state.user = user
+        setConfig(state, payload) {
+            state.config = payload
         },
+        setUser(state, payload) {
+            state.user = payload
+        }
     },
     actions: {
-        async login({ dispatch }, credentials) {
-            await axios.post('auth/login', credentials)
+        async login({ commit }, user) {
+            await axios.post('auth/login', user)
                 .then((result) => {
-                    console.log(result.data.data.token);
-                    return dispatch('attempt', result.data.data.token)
+                    commit('setToken', result.data.data.token)
+                    var config = {
+                        headers: {
+                            Authorization: 'Bearer ' + result.data.data.token
+                        }
+                    }
+                    SessionStorage.set('token', result.data.data.token)
+                    commit('setToken', result.data.data.token)
+                    SessionStorage.set('config', config)
+                    commit('setConfig', config)
+                    localStorage.setItem('user', result.data.data.user)
+                    commit('setUser', result.data.data.user)
+                    return true
                 })
                 .catch((error) => {
-                    console.log(error);
+                    return false;
                 })
         },
-        async attempt({ commit, state }, token) {
-            if (token) {
-                commit('SET_TOKEN', token)
+        obtenerToken({ commit }) {
+            if (SessionStorage.getItem('token')) {
+                commit('setToken', SessionStorage.getItem('token'))
+            } else {
+                commit('setToken', null)
             }
-            if (!state.token) {
-                return
+        },
+        obtenerConfig({ commit }) {
+            if (SessionStorage.getItem('config')) {
+                commit('setConfig', SessionStorage.getItem('config'))
+            } else {
+                commit('setConfig', null)
             }
-            try {
-                let response = await axios.get('auth/me', state.config)
-                commit('SET_USER', response.data.data.user)
-            } catch (e) {
-                commit('SET_USER', {
-                    "name": null,
-                    "email": null,
-                    "role": null
-                })
-                commit('SET_TOKEN', null)
+        },
+        obtenerUser({ commit }) {
+            if (localStorage.getItem('user')) {
+                commit('setUser', localStorage.getItem('user'))
+            } else {
+                commit('setUser', null)
             }
         },
         logout({ commit, state }) {
             return axios.get('auth/logout', state.config).then(() => {
-                commit('SET_USER', {
-                    "name": null,
-                    "email": null,
-                    "role": null
-                })
-                commit('SET_TOKEN', null)
+                commit('setToken', null)
+                commit('setConfig', null)
+                commit('setUser', null)
             })
         }
-    },
-    modules: {}
+    }
 }
