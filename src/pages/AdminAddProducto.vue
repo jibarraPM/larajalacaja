@@ -88,13 +88,13 @@
               <q-card-section class="q-pt-none">
                 <div class="q-pa-md">
                   <div class="q-gutter-sm">
-                    <div v-for="categoria in listaCategorias">
-                      <q-checkbox
-                        v-model="categoria.id"
-                        :val="categoria.nombre"
+                    <label v-for="categoria in listaCategorias">
+                      <q-checkbox 
+                        v-model="categorias"
+                        :val="categoria.id"
                         :label="categoria.nombre"
                       />
-                    </div>
+                      </label>
                   </div>
                 </div>
 
@@ -113,37 +113,18 @@
               <q-card-section class="q-pt-none">
                 <div class="q-pa-md">
                   <div class="q-gutter-sm">
-                    <q-checkbox
-                      v-model="pasatiempo"
-                      val="Cocinar"
-                      label="Cocinar"
-                    />
-                    <q-checkbox
-                      v-model="pasatiempo"
-                      val="Parrillar"
-                      label="Parrillar"
-                    />
-                    <q-checkbox
-                      v-model="pasatiempo"
-                      val="Hacer yoga"
-                      label="Hacer yoga"
-                    />
-                    <q-checkbox v-model="pasatiempo" val="Leer" label="Leer" />
-                    <q-checkbox
-                      v-model="pasatiempo"
-                      val="Tejer o bordar"
-                      label="Tejer o bordar"
-                    />
-                    <q-checkbox
-                      v-model="pasatiempo"
-                      val="Maquillaje"
-                      label="Maquillaje"
-                    />
+                    <label v-for="pasatiempo in listaPasatiempos">
+                      <q-checkbox 
+                        v-model="pasatiempos"
+                        :val="pasatiempo.id"
+                        :label="pasatiempo.nombre"
+                      />
+                      </label>
                   </div>
                 </div>
 
                 <div class="q-px-sm">
-                  Selección Actual <strong>{{ pasatiempo }}</strong>
+                  Selección Actual <strong>{{ pasatiempos }}</strong>
                 </div>
               </q-card-section>
             </q-card>
@@ -157,19 +138,18 @@
               <q-card-section class="q-pt-none">
                 <div class="q-pa-md">
                   <div class="q-gutter-sm">
-                    <q-checkbox v-model="petLover" val="Gatos" label="Gatos" />
-                    <q-checkbox
-                      v-model="petLover"
-                      val="Perros"
-                      label="Perros"
-                    />
-                    <q-checkbox v-model="petLover" val="Otro" label="Otro" />
-                    <q-checkbox v-model="petLover" val="No" label="No" />
+                    <label v-for="petLover in listaMascotas">
+                      <q-checkbox 
+                        v-model="petLovers"
+                        :val="petLover.id"
+                        :label="petLover.nombre"
+                      />
+                      </label>
                   </div>
                 </div>
 
                 <div class="q-px-sm">
-                  Selección Actual <strong>{{ petLover }}</strong>
+                  Selección Actual <strong>{{ petLovers }}</strong>
                 </div>
               </q-card-section>
             </q-card>
@@ -183,22 +163,13 @@
               <q-card-section class="q-pt-none">
                 <div class="q-pa-md">
                   <div class="q-gutter-sm">
-                    <q-checkbox v-model="brindis" val="Vino" label="Vino" />
-                    <q-checkbox
-                      v-model="brindis"
-                      val="Espumante"
-                      label="Espumante"
-                    />
-                    <q-checkbox
-                      v-model="brindis"
-                      val="Sangría"
-                      label="Sangría"
-                    />
-                    <q-checkbox
-                      v-model="brindis"
-                      val="No toma"
-                      label="No toma"
-                    />
+                    <label v-for="brindi in listaBrindis">
+                      <q-checkbox 
+                        v-model="brindis"
+                        :val="brindi.id"
+                        :label="brindi.nombre"
+                      />
+                    </label>
                   </div>
                 </div>
 
@@ -217,32 +188,18 @@
               <q-card-section class="q-pt-none">
                 <div class="q-pa-md">
                   <div class="q-gutter-sm">
-                    <q-checkbox
-                      v-model="preferencia"
-                      val="Chocolates"
-                      label="Chocolates"
-                    />
-                    <q-checkbox
-                      v-model="preferencia"
-                      val="Paletas o dulces"
-                      label="Paletas o dulces"
-                    />
-                    <q-checkbox
-                      v-model="preferencia"
-                      val="Salado"
-                      label="Salado"
-                    />
-                    <q-checkbox
-                      v-model="preferencia"
-                      val="Ninguna"
-                      label="Ninguna"
-                    />
-                    <q-checkbox v-model="preferencia" val="Otro" label="Otro" />
+                    <label v-for="preferencia in listaPreferencias">
+                      <q-checkbox 
+                        v-model="preferencias"
+                        :val="preferencia.id"
+                        :label="preferencia.nombre"
+                      />
+                    </label>
                   </div>
                 </div>
 
                 <div class="q-px-sm">
-                  Selección Actual <strong>{{ preferencia }}</strong>
+                  Selección Actual <strong>{{ preferencias }}</strong>
                 </div>
               </q-card-section>
             </q-card>
@@ -269,12 +226,13 @@ export default {
       cantidad: '',
       precioCompra: '',
       precioVenta: '',
+      foto: 'vacio',
 
       categorias: [],
-      pasatiempo: [],
+      pasatiempos: [],
       brindis: [],
-      preferencia: [],
-      petLover: [],
+      preferencias: [],
+      petLovers: [],
 
       //lista de objetos que son dinamicos, estos provenientes de la api
       listaCategorias:[],
@@ -304,14 +262,17 @@ export default {
         "cantidad": this.cantidad,
         "precioCompra": this.precioCompra,
         "precioVenta": this.precioVenta,
+        "foto": this.foto,
         "categorias": this.categorias,
-        "pasatiempos": this.pasatiempo,
+        "pasatiempos": this.pasatiempos,
         "brindis": this.brindis,
-        "preferencias": this.preferencia,
-        "mascotas": this.petLover
+        "preferencias": this.preferencias,
+        "mascotas": this.petLovers
       };
+      console.log("entro aca");
       axios.post(url,post,this.obtenerConfig)
       .then((result)=>{
+          console.log(result.data);
           if (result.data.success == true)  {
               console.log(result);
           }
