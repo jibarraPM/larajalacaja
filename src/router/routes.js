@@ -33,7 +33,7 @@ const routes = [{
                 path: '/productos',
                 component: () =>
                     import ('pages/AdminProductos.vue'),
-                meta: { requireAuth: true }
+                //meta: { requireAuth: true }
             },
             {
                 path: '/addProducto',

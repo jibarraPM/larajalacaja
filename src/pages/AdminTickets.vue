@@ -3,7 +3,7 @@
     <div class="q-pa-md">
     <q-table
       title="Tickes Generados"
-      :data="data"
+      :data="listaTicket"
       :columns="columns"
       row-key="name"
     >
@@ -39,7 +39,7 @@
         <q-tr v-show="props.expand" :props="props">
           <q-td colspan="100%">
 
-            <div class="text-left">Detalles del Ticket: {{ props.row.name }}.</div>
+            <div class="text-left">Detalles del Ticket: {{ props.row.id }}.</div>
           </q-td>
         </q-tr>
       </template>
@@ -50,6 +50,8 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: 'PageIndex',
   data () {
@@ -60,124 +62,74 @@ export default {
           required: true,
           label: 'ID',
           align: 'left',
-          field: row => row.name,
+          field: row => row.id,
           format: val => `${val}`,
           sortable: true
         },
-        { name: 'calories', align: 'center', label: 'Estado', field: 'calories', sortable: true },
-        { name: 'protein', label: 'Tipo de Caja', field: 'protein' },
-        { name: 'fat', label: 'Valor', field: 'fat', sortable: true, style: 'width: 10px' },
-        { name: 'carbs', label: 'Cantidad de Productos', field: 'carbs' },
-        { name: 'protein', label: 'Telefono', field: 'protein' },
-        { name: 'protein', label: 'Correo', field: 'protein' },
+        { name: 'estado', align: 'center', label: 'Estado', field: 'estado', sortable: true },
+        { name: 'tipoCaja', label: 'Tipo de Caja', field: 'tipoCaja' },
+        { name: 'null', label: 'Valor', field: 'fat', sortable: true, style: 'width: 10px' },
+        { name: 'null2', label: 'Cantidad de Productos', field: 'carbs' },
+        { name: 'telefono', label: 'Telefono', field: 'telefono' },
+        { name: 'email', label: 'Correo', field: 'email' },
         
-        { name: 'sodium', label: 'Dirección', field: 'sodium' },
-        { name: 'calcium', label: 'Fecha Ingreso', field: 'calcium', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) },
-        { name: 'iron', label: 'Fecha Entrega', field: 'iron', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) }
+        { name: 'direccion', label: 'Dirección', field: 'direccion' },
+        { name: 'created_at', label: 'Fecha Ingreso', field: 'created_at', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) },
+        { name: 'entrega', label: 'Fecha Entrega', field: 'entrega', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) }
       ],
-      data: [
-        {
-          name: '111',
-          calories: 'En envio',
-          fat: '21540',
-          carbs: '5',
-          protein: 'Caja Medium',
-          sodium: 'Villa Alegre',
-          calcium: '24/01/2021',
-          iron: '1%'
-        },
-        {
-          name: 'Ice cream sandwich',
-          calories: 237,
-          fat: 9.0,
-          carbs: 37,
-          protein: 4.3,
-          sodium: 129,
-          calcium: '8%',
-          iron: '1%'
-        },
-        {
-          name: 'Eclair',
-          calories: 262,
-          fat: 16.0,
-          carbs: 23,
-          protein: 6.0,
-          sodium: 337,
-          calcium: '6%',
-          iron: '7%'
-        },
-        {
-          name: 'Cupcake',
-          calories: 305,
-          fat: 3.7,
-          carbs: 67,
-          protein: 4.3,
-          sodium: 413,
-          calcium: '3%',
-          iron: '8%'
-        },
-        {
-          name: 'Gingerbread',
-          calories: 356,
-          fat: 16.0,
-          carbs: 49,
-          protein: 3.9,
-          sodium: 327,
-          calcium: '7%',
-          iron: '16%'
-        },
-        {
-          name: 'Jelly bean',
-          calories: 375,
-          fat: 0.0,
-          carbs: 94,
-          protein: 0.0,
-          sodium: 50,
-          calcium: '0%',
-          iron: '0%'
-        },
-        {
-          name: 'Lollipop',
-          calories: 392,
-          fat: 0.2,
-          carbs: 98,
-          protein: 0,
-          sodium: 38,
-          calcium: '0%',
-          iron: '2%'
-        },
-        {
-          name: 'Honeycomb',
-          calories: 408,
-          fat: 3.2,
-          carbs: 87,
-          protein: 6.5,
-          sodium: 562,
-          calcium: '0%',
-          iron: '45%'
-        },
-        {
-          name: 'Donut',
-          calories: 452,
-          fat: 25.0,
-          carbs: 51,
-          protein: 4.9,
-          sodium: 326,
-          calcium: '2%',
-          iron: '22%'
-        },
-        {
-          name: 'KitKat',
-          calories: 518,
-          fat: 26.0,
-          carbs: 65,
-          protein: 7,
-          sodium: 54,
-          calcium: '12%',
-          iron: '6%'
-        }
-      ]
+      listaTicket:[]
     }
+  },
+  methods:{
+    obtenerTicket() {
+      var url = 'tickets';
+      this.listaTicketsAux = [];
+      axios.get(url,this.obtenerConfig)
+      .then((result)=>{
+        if (result.data.success == true) {
+          for (let index = 0; index < result.data.data.tickets.length; index++) {
+              const element = result.data.data.tickets[index];
+              let ticket = {
+                  id: element.id,
+                  email: element.email,
+                  receptor: element.receptor,
+                  emisor: element.emisor,
+                  nacimiento: element.nacimiento,
+                  color: element.color,
+                  excepcion: element.excepcion,
+                  pyme: element.pyme,
+                  foto: element.foto,
+                  mensaje: element.mensaje,
+                  entrega: element.entrega,
+                  region: element.region,
+                  comuna: element.comuna,
+                  direccion: element.direccion,
+                  telefono: element.telefono,
+                  motivo: element.motivo,
+                  estado: element.estado,
+                  tipoCaja: element.tipoCaja,
+                  tipoPersona: element.tipoPersona,
+                  created_at: element.created_at,
+                  updated_at: element.updated_at,
+                  categorias: element.updated_at,
+                  brindis: element.brindis,
+                  pasatiempos: element.pasatiempos,
+                  preferencias: element.preferencias,
+                  mascotas: element.mascotas,
+              };
+              this.listaTicketsAux[index]=ticket;
+          }
+          this.listaTicket= this.listaTicketsAux;
+          console.log(this.listaTicket);
+        }
+      })
+      .catch((error) => {
+          console.log(error.response.data);
+      });
+    }
+  },
+  beforeMount(){
+    this.obtenerTicket();
   }
 }
 </script>

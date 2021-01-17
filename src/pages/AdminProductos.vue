@@ -8,7 +8,7 @@
 
     <q-table
       title="Productos"
-      :data="data"
+      :data="listaProductos"
       :columns="columns"
       row-key="name"
       binary-state-sort
@@ -56,6 +56,8 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: 'PageIndex',
   data () {
@@ -79,110 +81,45 @@ export default {
         { name: 'valorInventario', label: 'Valor Inventario', field: 'valorInventario', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) },
         { name: 'gananciaNeta', label: 'Ganancia Neta', field: 'gananciaNeta', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) }
       ],
-      data: [
-        {
-          name: 'Frozen Yogurt',
-          cantidad: 159,
-          precioCompra: 6.0,
-          precioVenta: 24,
-          id: 4.0,
-          costoInventario: 87,
-          valorInventario: '14%',
-          gananciaNeta: '1%',
-          utilidad:'12%'
-        },
-        {
-          name: 'Ice cream sandwich',
-          cantidad: 237,
-          precioCompra: 9.0,
-          precioVenta: 37,
-          id: 4.3,
-          costoInventario: 129,
-          valorInventario: '8%',
-          gananciaNeta: '1%'
-        },
-        {
-          name: 'Eclair',
-          cantidad: 262,
-          precioCompra: 16.0,
-          precioVenta: 23,
-          id: 6.0,
-          costoInventario: 337,
-          valorInventario: '6%',
-          gananciaNeta: '7%'
-        },
-        {
-          name: 'Cupcake',
-          cantidad: 305,
-          precioCompra: 3.7,
-          precioVenta: 67,
-          id: 4.3,
-          costoInventario: 413,
-          valorInventario: '3%',
-          gananciaNeta: '8%'
-        },
-        {
-          name: 'Gingerbread',
-          cantidad: 356,
-          precioCompra: 16.0,
-          precioVenta: 49,
-          id: 3.9,
-          costoInventario: 327,
-          valorInventario: '7%',
-          gananciaNeta: '16%'
-        },
-        {
-          name: 'Jelly bean',
-          cantidad: 375,
-          precioCompra: 0.0,
-          precioVenta: 94,
-          id: 0.0,
-          costoInventario: 50,
-          valorInventario: '0%',
-          gananciaNeta: '0%'
-        },
-        {
-          name: 'Lollipop',
-          cantidad: 392,
-          precioCompra: 0.2,
-          precioVenta: 98,
-          id: 0,
-          costoInventario: 38,
-          valorInventario: '0%',
-          gananciaNeta: '2%'
-        },
-        {
-          name: 'Honeycomb',
-          cantidad: 408,
-          precioCompra: 3.2,
-          precioVenta: 87,
-          id: 6.5,
-          costoInventario: 562,
-          valorInventario: '0%',
-          gananciaNeta: '45%'
-        },
-        {
-          name: 'Donut',
-          cantidad: 452,
-          precioCompra: 25.0,
-          precioVenta: 51,
-          id: 4.9,
-          costoInventario: 326,
-          valorInventario: '2%',
-          gananciaNeta: '22%'
-        },
-        {
-          name: 'KitKat',
-          cantidad: 518,
-          precioCompra: 26.0,
-          precioVenta: 65,
-          id: 7,
-          costoInventario: 54,
-          valorInventario: '12%',
-          gananciaNeta: '6%'
-        }
-      ]
+      listaProductos:[]
     }
   },
+  methods:{
+    obtenerProductos() {
+      var url = 'productos';
+      this.listaProductosAux = [];
+      axios.get(url,this.obtenerConfig)
+      .then((result)=>{
+        if (result.data.success == true) {
+          for (let index = 0; index < result.data.data.productos.length; index++) {
+              const element = result.data.data.productos[index];
+              let producto = {
+                id: element.id,
+                nombre: element.nombre,
+                cantidad: element.cantidad,
+                precioCompra: element.precioCompra,
+                precioVenta: element.precioVenta,
+                foto: element.foto,
+                created_at: element.created_at,
+                updated_at: element.updated_at,
+                categorias: element.categorias,
+                brindis: element.brindis,
+                pasatiempos: element.pasatiempos,
+                preferencias: element.preferencias
+              };
+              this.listaProductosAux[index]=producto;
+          }
+          this.listaProductos= this.listaProductosAux;
+          console.log(this.listaProductos);
+        }
+      })
+      .catch((error) => {
+          console.log(error.response.data);
+      });
+    }
+  },
+  beforeMount(){
+    this.obtenerProductos();
+  }
 }
 </script>
