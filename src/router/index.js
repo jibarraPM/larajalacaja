@@ -2,7 +2,9 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 import routes from './routes'
-import store from '../store'
+
+import { SessionStorage } from 'quasar'
+
 
 Vue.use(VueRouter)
 
@@ -30,7 +32,7 @@ export default function( /* { store, ssrContext } */ ) {
     Router.beforeEach((to, from, next) => {
         const rutaProtegida = to.matched.some(record => record.meta.requireAuth);
 
-        if (rutaProtegida && store.getters['auth/authenticated'] === null) {
+        if (rutaProtegida && SessionStorage.getItem('token') === null) {
             // ruta protegida es true
             // token es nulo true, por ende redirigimos al inicio
             next({ name: 'login' })

@@ -17,28 +17,32 @@ const routes = [{
                 name: 'admin',
                 path: '/admin',
                 component: () =>
-                    import ('pages/AdminIndex.vue')
+                    import ('pages/AdminIndex.vue'),
+                meta: { requireAuth: true }
             },
             {
                 path: '/form',
                 component: () =>
-                    import ('pages/FormCaja.vue')
+                    import ('pages/FormCaja.vue'),
+                meta: { requireAuth: true }
             },
             {
                 path: '/tickets',
                 component: () =>
-                    import ('pages/AdminTickets.vue')
+                    import ('pages/AdminTickets.vue'),
+                meta: { requireAuth: true }
             },
             {
                 path: '/productos',
                 component: () =>
                     import ('pages/AdminProductos.vue'),
-                //meta: { requireAuth: true }
+                meta: { requireAuth: true }
             },
             {
                 path: '/addProducto',
                 component: () =>
-                    import ('pages/AdminAddProducto.vue')
+                    import ('pages/AdminAddProducto.vue'),
+                meta: { requireAuth: true }
             }
         ]
     },

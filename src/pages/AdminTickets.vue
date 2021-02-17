@@ -5,7 +5,7 @@
       title="Tickes Generados"
       :data="listaTicket"
       :columns="columns"
-      row-key="name"
+      row-key="id"
     >
 
       <template v-slot:header="props">
@@ -38,8 +38,14 @@
         </q-tr>
         <q-tr v-show="props.expand" :props="props">
           <q-td colspan="100%">
-
-            <div class="text-left">Detalles del Ticket: {{ props.row.id }}.</div>
+            <q-table
+              title="Detalle Ticket"
+              :data="props.row.detalleTickets"
+              :columns="columns2"
+              row-key="id"
+            >
+            </q-table>
+            
           </q-td>
         </q-tr>
       </template>
@@ -66,16 +72,31 @@ export default {
           format: val => `${val}`,
           sortable: true
         },
-        { name: 'estado', align: 'center', label: 'Estado', field: 'estado', sortable: true },
-        { name: 'tipoCaja', label: 'Tipo de Caja', field: 'tipoCaja' },
-        { name: 'null', label: 'Valor', field: 'fat', sortable: true, style: 'width: 10px' },
-        { name: 'null2', label: 'Cantidad de Productos', field: 'carbs' },
+        { name: 'estado', align: 'center', label: 'Estado', field: 'nombreEstado', sortable: true },
+        { name: 'tipoCaja', label: 'Tipo de Caja', field: 'nombreTipoCaja' },
+        { name: 'valor', label: 'Valor', field: 'valor', sortable: true, style: 'width: 10px' },
+        { name: 'cantidadProducto', label: 'Cantidad de Productos', field: 'cantidadProducto' },
         { name: 'telefono', label: 'Telefono', field: 'telefono' },
         { name: 'email', label: 'Correo', field: 'email' },
         
         { name: 'direccion', label: 'Dirección', field: 'direccion' },
         { name: 'created_at', label: 'Fecha Ingreso', field: 'created_at', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) },
         { name: 'entrega', label: 'Fecha Entrega', field: 'entrega', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) }
+      ],
+      columns2: [
+        {
+          name: 'desc',
+          required: true,
+          label: 'ID',
+          align: 'left',
+          field: row => row.id,
+          format: val => `${val}`,
+          sortable: true
+        },
+        { name: 'nombre', align: 'center', label: 'Nombre', field: 'nombre', sortable: true },
+        { name: 'cantidad', align: 'center', label: 'Cantidad', field: 'cantidad', sortable: true, },
+        { name: 'precio', align: 'center', label: 'Precio', field: 'precio', sortable: true },
+        { name: 'total', align: 'center', label: 'Total', field: 'total', sortable: true }
       ],
       listaTicket:[]
     }
@@ -116,7 +137,16 @@ export default {
                   pasatiempos: element.pasatiempos,
                   preferencias: element.preferencias,
                   mascotas: element.mascotas,
+                  detalleTickets: element.detalleTickets,
+                  nombreTipoCaja: element.get_tipo_caja.nombre,
+                  nombreEstado: element.get_estado.nombre,
+                  cantidadProducto: element.cantidadProducto,
+                  valor: element.valor
               };
+              ticket.detalleTickets.forEach((detalle) => {
+                detalle.nombre=detalle.get_producto.nombre
+              });
+              
               this.listaTicketsAux[index]=ticket;
           }
           this.listaTicket= this.listaTicketsAux;
