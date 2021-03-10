@@ -17,7 +17,7 @@
         <q-tr :props="props">
           <q-td key="id" :props="props">{{ props.row.id }}</q-td>
           <q-td key="nombre" :props="props">
-            {{ props.row.name }}
+            {{ props.row.nombre }}
             <q-popup-edit v-model="props.row.name" title="Actualizar Producto" buttons label-set="Ok"
           label-cancel="Cancelar">
               <q-input v-model="props.row.name" dense autofocus counter />

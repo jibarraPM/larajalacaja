@@ -25,7 +25,7 @@
         <q-tr :props="props">
           <q-td auto-width>
             <q-btn size="sm" color="primary" round dense @click="props.expand = !props.expand" :icon="props.expand ? 'remove' : 'add'" />
-            <q-btn size="sm" color="primary" round dense icon="edit"/>
+            <q-btn size="sm" color="primary" round dense @click="editTicket(props.row.id)" icon="edit"/>
           </q-td>
           
           <q-td
@@ -156,6 +156,10 @@ export default {
       .catch((error) => {
           console.log(error.response.data);
       });
+    },
+    editTicket(id){
+      console.log(id);
+      this.$router.push('tickets/' + id);
     }
   },
   beforeMount(){

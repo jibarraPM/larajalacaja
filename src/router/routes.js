@@ -43,6 +43,12 @@ const routes = [{
                 component: () =>
                     import ('pages/AdminAddProducto.vue'),
                 meta: { requireAuth: true }
+            },
+            {
+                path: '/tickets/:id',
+                component: () =>
+                    import ('pages/AdminEditTicket.vue'),
+                meta: { requireAuth: true }
             }
         ]
     },
