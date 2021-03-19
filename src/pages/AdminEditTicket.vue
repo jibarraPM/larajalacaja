@@ -71,7 +71,7 @@
     </div>
     
     <div class="q-pa-md q-gutter-sm">
-      <q-btn color="primary" icon="inventory_2" label="Agregar Producto" @click='holamundo()'/>
+      <q-btn color="primary" icon="inventory_2" label="Agregar Producto"/>
     </div>
 
     <div class="q-pa-md">
@@ -163,6 +163,7 @@
 
 <script>
 import axios from "axios";
+import { Notify } from 'quasar';
 
 export default {
   name: 'PageIndex',
@@ -198,9 +199,6 @@ export default {
     }
   },
   methods:{
-    holamundo(){
-      console.log("hola mundo");
-    },
     obtenerTicket() {
       var url = 'tickets/'+this.$route.params.id;
       axios.get(url,this.obtenerConfig)
@@ -255,26 +253,56 @@ export default {
       let data= {
         nombre: "s"
       };
+      const notif = Notify.create({
+        type: 'ongoing',
+        position: 'top-right',
+        message: 'Esperando respuesta del servidor...'
+      })
       axios.put(url,this.obtenerConfig, data)
       .then((result)=>{
         if (result.data.success == true) {
-          console.log(result.data.data);
+          setTimeout(() => {
+            notif({
+              type: 'positive',
+              message: result.data.message,
+            })
+          }, 0)
         }
       })
       .catch((error) => {
-          console.log(error.response.data);
+          setTimeout(() => {
+            notif({
+              type: 'negative',
+              message: error.response.data.message,
+            })
+          }, 0)
       });
     },
     deleteDetalle(id){
       var url = 'detalleTickets/'+id;
+      const notif = Notify.create({
+        type: 'ongoing',
+        position: 'top-right',
+        message: 'Esperando respuesta del servidor...'
+      })
       axios.delete(url,this.obtenerConfig)
       .then((result)=>{
         if (result.data.success == true) {
-          console.log(result.data.data);
+          setTimeout(() => {
+            notif({
+              type: 'positive',
+              message: result.data.message,
+            })
+          }, 0)
         }
       })
       .catch((error) => {
-          console.log(error.response.data);
+          setTimeout(() => {
+            notif({
+              type: 'negative',
+              message: error.response.data.message,
+            })
+          }, 0)
       });
     },
     obtenerProductos() {
@@ -296,16 +324,26 @@ export default {
               });
           }
         }
-        console.log(this.listaProductos);
       })
       .catch((error) => {
           console.log(error.response.data);
       });
     },
     actualizarProducto(){
+      const notif = Notify.create({
+        type: 'ongoing',
+        position: 'top-right',
+        message: 'Esperando respuesta del servidor...'
+      })
       this.producto = this.idProducto;
       console.log(this.idProducto);
       console.log(this.producto);
+      setTimeout(() => {
+        notif({
+          type: 'positive',
+          message: result.data.message,
+        })
+      }, 0)
 
     },
     agregarProducto(){
@@ -317,15 +355,30 @@ export default {
         "precio": this.producto.precioVenta,
         "total": this.producto.precioVenta*this.cantidad,
       };
+      const notif = Notify.create({
+        type: 'ongoing',
+        position: 'top-right',
+        message: 'Esperando respuesta del servidor...'
+      })
       axios.post(url,post,this.obtenerConfig)
       .then((result)=>{
           console.log(result.data);
           if (result.data.success == true)  {
-              console.log(result);
+              setTimeout(() => {
+              notif({
+                type: 'positive',
+                message: result.data.message,
+              })
+            }, 0)
           }
       })
       .catch((error)=>{
-          console.log(error);
+          setTimeout(() => {
+            notif({
+              type: 'negative',
+              message: error.response.data.message,
+            })
+          }, 0)
       });
     },
   },

@@ -217,6 +217,7 @@
 <script>
 import { mapActions } from 'vuex'
 import axios from 'axios'
+import { Notify } from 'quasar'
 
 export default {
   data () {
@@ -269,16 +270,30 @@ export default {
         "preferencias": this.preferencias,
         "mascotas": this.petLovers
       };
-      console.log("entro aca");
+      const notif = Notify.create({
+        type: 'ongoing',
+        position: 'top-right',
+        message: 'Esperando respuesta del servidor...'
+      })
       axios.post(url,post,this.obtenerConfig)
       .then((result)=>{
           console.log(result.data);
           if (result.data.success == true)  {
-              console.log(result);
+            setTimeout(() => {
+              notif({
+                type: 'positive',
+                message: result.data.message,
+              })
+            }, 0)
           }
       })
       .catch((error)=>{
-          console.log(error);
+          setTimeout(() => {
+            notif({
+              type: 'negative',
+              message: error.response.data.message,
+            })
+          }, 0)
       });
     },
     obtenerCategorias(){

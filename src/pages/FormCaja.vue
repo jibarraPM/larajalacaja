@@ -53,8 +53,27 @@
                 <div class="q-px-sm">
                   Tu seleccion es: <strong>{{ motivo }}</strong>
                 </div>
+                <q-tr v-show="motivo == '1'">
+
+                    <q-card-section>
+                      <div class="text-h6">Edad</div>
+                    </q-card-section>
+                    <q-input
+                      outlined
+                      v-model="receptor"
+                      type="text"
+                      placeholder="Ingrese la edad"
+                      >
+                      <template v-slot:prepend>
+                        <q-icon name="face" />
+                      </template>
+                    </q-input>
+                  </q-tr>
               </q-card-section>
+              
             </q-card>
+
+
             <q-card flat bordered class="my-card">
               <q-card-section>
                 <div class="text-h6">Para Quién?</div>
@@ -99,10 +118,7 @@
           <q-stepper-navigation>
             <q-btn
               @click="
-                () => {
-                  done1 = true;
-                  step = 2;
-                }
+                triggerFase2()
               "
               color="primary"
               label="Continuar"
@@ -188,7 +204,18 @@
 
               <q-card-section class="q-pt-none">
                 <div class="q-pa-md">
-                  <div class="q-gutter-sm">
+                  <q-tr v-show="mascota == 'false'">
+                    <q-card-section class="q-pt-none">
+                      <div class="q-gutter-sm">
+                        <q-radio v-model="mascota" val="true" label="Si" />
+                        <q-radio v-model="mascota" val="false" label="No" />
+                      </div>
+                    </q-card-section>
+                  </q-tr>
+                  
+
+                  <q-tr v-show="mascota == 'true'">
+                    <div class="q-gutter-sm">
                       <label v-for="petLover in listaMascotas">
                       <q-checkbox 
                         v-model="petLovers"
@@ -196,9 +223,9 @@
                         :label="petLover.nombre"
                       />
                       </label>
-                  </div>
+                    </div>
+                  </q-tr>
                 </div>
-
                 <div class="q-px-sm">
                   Selección Actual <strong>{{ petLovers }}</strong>
                 </div>
@@ -312,17 +339,16 @@
           <q-stepper-navigation>
             <q-btn
               @click="
-                () => {
-                  done2 = true;
-                  step = 3;
-                }
+                triggerFase3()
               "
               color="primary"
               label="Continuar"
             />
             <q-btn
               flat
-              @click="step = 1"
+              @click="
+                triggerFase1()
+              "
               color="primary"
               label="Volver"
               class="q-ml-sm"
@@ -371,7 +397,7 @@
                       <q-radio 
                         v-model="tipoCaja"
                         :val="TipoCaja.id"
-                        :label="TipoCaja.nombre"
+                        :label="TipoCaja.nombre + ' (' + TipoCaja.precio+ ')'"
                       />         
                     </label>           
                   </div>
@@ -471,7 +497,10 @@
                       <p>Motivo: {{ motivo }}</p>
                       <p>Para quien: {{ tipoPersona }}</p>
                       <p>Mensaje: {{ mensaje }}</p>
+                      <p>Valor caja: {{ listaTipoCajas[tipoCaja].precio }}</p>
+                      <p>Envio: {{ 0 }}</p>
                     </div>
+
                   </q-card>
 
                   <q-card-actions align="right">
@@ -486,7 +515,9 @@
             <q-btn label="Detalles" color="primary" @click="alert = true" />
             <q-btn
               flat
-              @click="step = 2"
+              @click="
+                triggerFase2()
+              "
               color="primary"
               label="Volver"
               class="q-ml-sm"
@@ -501,6 +532,7 @@
 
 <script>
 import axios from "axios";
+import { Notify } from 'quasar'
 
 export default {
   name: "PageIndex",
@@ -520,7 +552,7 @@ export default {
 
       categorias: [],
       pasatiempos: [],
-      petLovers: [],
+      petLovers: [4],
       brindis: [],
       preferencias: [],
 
@@ -531,7 +563,7 @@ export default {
 
       email: "",
       nombreComprador: "",
-      tipoCaja: "Caja Medium",
+      tipoCaja: 2,
       fechaEntrega: "",
       region: "",
       comuna: "",
@@ -545,6 +577,7 @@ export default {
 
       alert: false,
 
+      mascota: 'false',
 
       //lista de objetos que son dinamicos, estos provenientes de la api
       listaCategorias:[],
@@ -554,11 +587,43 @@ export default {
       listaMascotas:[],
       listaMotivos:[],
       listaTipoPersonas:[],
-      listaTipoCajas:[]
+      listaTipoCajas:[
+        {
+          precio: 0
+        },  {
+          precio: 0
+        },{
+          precio: 0
+        }]
     };
   },
 
   methods: {
+    triggerFase1() {
+      
+      Notify.create({
+        type: 'info',
+        position: 'top-right',
+        message: `Fase 1: Datos del receptor.`
+      })
+      this.step = 1;
+    },
+    triggerFase2() {
+      Notify.create({
+        type: 'info',
+        position: 'top-right',
+        message: `Fase 2: Gustos del receptor.`
+      })
+      this.step = 2;
+    },
+    triggerFase3() {
+      Notify.create({
+        type: 'info',
+        position: 'top-right',
+        message: `Fase 3: Datos de la compra.`
+      })
+      this.step = 3;
+    },
     reset() {
       this.done1 = false;
       this.done2 = false;
@@ -622,15 +687,30 @@ export default {
         "preferencias": this.preferencias,
         "mascotas": this.petLovers
       };
+      const notif = Notify.create({
+        type: 'ongoing',
+        position: 'top-right',
+        message: 'Esperando respuesta del servidor...'
+      })
       axios.post(url,post,this.obtenerConfig)
       .then((result)=>{
-          console.log(result.data);
           if (result.data.success == true)  {
-              console.log(result);
+            console.log(result);
+            setTimeout(() => {
+              notif({
+                type: 'positive',
+                message: result.data.message,
+              })
+            }, 0)
           }
       })
       .catch((error)=>{
-          console.log(error.response.data);
+          setTimeout(() => {
+            notif({
+              type: 'negative',
+              message: error.response.data.message,
+            })
+          }, 0)
       });
     },
     obtenerCategorias(){
@@ -791,6 +871,7 @@ export default {
               let tipocaja = {
                   id: element.id,
                   nombre: element.nombre,
+                  precio: element.precio
               };
               this.listaTipoCajasAux[index]=tipocaja;
           }
@@ -807,6 +888,7 @@ export default {
   beforeMount(){
     //Nota: estas funciones se pueden demorar en ejecutarse, esto quiere decir que no espera a que termine para mostrar los datos, dado a que es a 2 tiempos
     //me refiero a que primero llena los datos como nombre y cantidad, no deberia darse cuenta de esto, el tiempo es relativamente corto, depende del internet obviamente
+    this.obtenerTipoCaja();
     this.obtenerCategorias();
     this.obtenerPasatiempos();
     this.obtenerBrindis();
@@ -814,7 +896,6 @@ export default {
     this.obtenerMascotas();
     this.obtenerMotivo();
     this.obtenerTipoPersona();
-    this.obtenerTipoCaja();
   },
 
   async mounted() {
