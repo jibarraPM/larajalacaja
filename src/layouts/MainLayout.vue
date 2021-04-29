@@ -54,37 +54,37 @@ const linksData = [
     title: 'Inicio',
     caption: 'Información general',
     icon: 'home',
-    link: 'admin'
+    link: '/admin'
   },
   {
     title: 'form',
     caption: 'github.com/quasarframework',
     icon: 'code',
-    link: 'form'
+    link: '/form'
   },
   {
     title: 'tickets',
     caption: 'chat.quasar.dev',
     icon: 'chat',
-    link: 'tickets'
+    link: '/tickets'
   },
   {
     title: 'productos',
     caption: 'forum.quasar.dev',
     icon: 'record_voice_over',
-    link: 'productos'
+    link: '/productos'
   },
   {
     title: 'addProducto',
     caption: '@quasarframework',
     icon: 'rss_feed',
-    link: 'addProducto'
+    link: '/addProducto'
   },
   {
     title: 'login',
     caption: '@QuasarFramework',
     icon: 'public',
-    link: 'login'
+    link: '/login'
   },
 ];
 

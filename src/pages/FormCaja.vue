@@ -60,7 +60,7 @@
                     </q-card-section>
                     <q-input
                       outlined
-                      v-model="receptor"
+                      v-model="edad"
                       type="text"
                       placeholder="Ingrese la edad"
                       >
@@ -411,7 +411,7 @@
 
             <q-card flat bordered class="my-card">
               <q-card-section>
-                <div class="text-h6">Feche de Entrega</div>
+                <div class="text-h6">Fecha de Recepción</div>
               </q-card-section>
 
               <q-card-section class="q-pt-none">
@@ -545,10 +545,12 @@ export default {
 
 
       receptor: "",
+      receptor: "",
       motivo: "",
       tipoPersona: "",
       nacimiento: "",
       color: "",
+      edad: "",
 
       categorias: [],
       pasatiempos: [],
@@ -666,6 +668,7 @@ export default {
         "email": this.email,
         "receptor": this.receptor,
         "emisor": this.nombreComprador,
+        "edad": this.edad,
         "nacimiento": this.nacimiento,
         "color": this.color,
         "excepcion": this.excepcion,

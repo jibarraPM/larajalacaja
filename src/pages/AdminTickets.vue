@@ -81,7 +81,7 @@ export default {
         
         { name: 'direccion', label: 'Dirección', field: 'direccion' },
         { name: 'created_at', label: 'Fecha Ingreso', field: 'created_at', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) },
-        { name: 'entrega', label: 'Fecha Entrega', field: 'entrega', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) }
+        { name: 'entrega', label: 'Fecha Recepción', field: 'entrega', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) }
       ],
       columns2: [
         {

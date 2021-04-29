@@ -22,10 +22,10 @@
 
       <div class="row">
         <div class="col">
-          nacimiento: {{ticket.nacimiento}}
+          Nacimiento: {{ticket.nacimiento}}
         </div>
         <div class="col">
-          color: {{ticket.color}}
+          Color: {{ticket.color}}
         </div>
         <div class="col">
           Excepcion: {{ticket.excepcion}}
@@ -34,44 +34,44 @@
 
       <div class="row">
         <div class="col">
-          pyme: {{ticket.pyme}}
+          Pyme: {{ticket.pyme}}
         </div>
         <div class="col">
-          mensaje: {{ticket.mensaje}}
+          Mensaje: {{ticket.mensaje}}
         </div>
         <div class="col">
-          entrega: {{ticket.entrega}}
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col">
-          region: {{ticket.region}}
-        </div>
-        <div class="col">
-          comuna: {{ticket.comuna}}
-        </div>
-        <div class="col">
-          direccion: {{ticket.direccion}}
+          Fecha de Recepción: {{ticket.entrega}}
         </div>
       </div>
 
       <div class="row">
         <div class="col">
-          telefono: {{ticket.telefono}}
+          Region: {{ticket.region}}
         </div>
         <div class="col">
-          valor: {{ticket.valor}}
+          Comuna: {{ticket.comuna}}
         </div>
         <div class="col">
-          cantidad producto: {{ticket.cantidadProducto}}
+          Direccion: {{ticket.direccion}}
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          Telefono: {{ticket.telefono}}
+        </div>
+        <div class="col">
+          Valor: {{ticket.valor}}
+        </div>
+        <div class="col">
+          Cantidad Producto: {{ticket.cantidadProducto}}
         </div>
       </div>
 
     </div>
     
     <div class="q-pa-md q-gutter-sm">
-      <q-btn color="primary" icon="inventory_2" label="Agregar Producto"/>
+      <q-btn color="primary" icon="inventory_2" @click="agregar = true" label="Agregar Producto"/>
     </div>
 
     <div class="q-pa-md">
@@ -98,8 +98,8 @@
       <template v-slot:body="props">
         <q-tr :props="props">
           <q-td auto-width>
-            <q-btn size="sm" color="primary" round dense @click="editDetalle(props.cols[0].value)" icon="edit"/>
-            <q-btn size="sm" color="primary" round dense @click="deleteDetalle(props.cols[0].value)" icon="delete"/>
+            <q-btn size="sm" color="primary" round dense @click="modalDetalle(props.cols[0].value)"  icon="edit"/>
+            <q-btn size="sm" color="primary" round dense @click="modaldeleteDetalle(props.cols[0].value)" icon="delete"/>
           </q-td>
           
           <q-td
@@ -112,50 +112,116 @@
         </q-tr>
       </template>
     </q-table>
-    
-    <div class="q-pa-md q-gutter-sm" >
-      <div class="q-gutter-sm">
-        <q-select
-          v-model="idProducto"
-          :options="opciones"
-          label="Seleccione el producto"
-          @input="actualizarProducto()"
-        />
-      </div>
-    </div> 
-
-    <div class="row">
-      <div class="col">
-        Nombre: {{ producto.nombre }}
-      </div>
-      <div class="col">
-        cantidad inventario: {{ producto.cantidad }}
-      </div>
-      <div class="col">
-        precioCompra: {{ producto.precioCompra }}
-      </div>
-      <div class="col">
-        precioVenta: {{ producto.precioVenta }}
-      </div>
-    </div>
-
-    <div class="q-pa-md q-gutter-sm">
-
-           <q-input
-              outlined
-              v-model="cantidad"
-              type="text"
-              placeholder="Cantidad de producto"
-            >
-              <template v-slot:prepend>
-                <q-icon name="inventory_2
-" />
-              </template>
-            </q-input>
-      
-    </div>
-    <q-btn @click="agregarProducto()" color="primary" label="Agregar Producto" />
+  
   </div>
+
+  <q-dialog v-model="agregar">
+    <q-card style="width: 700px; max-width: 80vw;">
+      <q-bar>
+        <div>Agregar producto</div>
+      </q-bar>
+
+
+      <q-card-section>
+        <div class="text-h6">
+          Direccion de Entrega
+        </div>
+
+        <div class="q-gutter-sm">
+          <q-select
+            v-model="idProducto"
+            :options="opciones"
+            label="Seleccione el producto"
+            @input="actualizarProducto()"
+          />
+        </div>
+      </q-card-section>
+
+      <q-card-section>
+          Nombre: {{ producto.nombre }}
+      </q-card-section>
+      <q-card-section>
+          cantidad inventario: {{ producto.cantidad }}
+      </q-card-section>
+      <q-card-section>
+          precioCompra: {{ producto.precioCompra }}
+      </q-card-section>
+      <q-card-section>
+          precioVenta: {{ producto.precioVenta }}
+      </q-card-section>
+      <q-card-section>
+      <q-input
+        outlined
+        v-model="cantidad"
+        type="text"
+        placeholder="Cantidad de producto"
+        >
+        <template v-slot:prepend>
+          <q-icon name="inventory_2" />
+        </template>
+      </q-input>
+      </q-card-section>
+
+      <q-card-actions align="right">
+        <q-btn flat label="Agregar" color="primary" @click="agregarProducto()" v-close-popup />
+        <q-btn flat label="Cancelar" color="primary" v-close-popup />
+      </q-card-actions>
+    </q-card>
+  </q-dialog>
+
+  <q-dialog v-model="modificar">
+    <q-card style="width: 700px; max-width: 80vw;">
+      <q-bar>
+        <div>Modificar producto</div>
+      </q-bar>
+
+      <q-card-section>
+          Nombre: {{ editproducto.nombre }}
+      </q-card-section>
+      <q-card-section>
+          cantidad inventario: {{ editproducto.cantidad }}
+      </q-card-section>
+      <q-card-section>
+          precioCompra: {{ editproducto.precioCompra }}
+      </q-card-section>
+      <q-card-section>
+          precioVenta: {{ editproducto.precioVenta }}
+      </q-card-section>
+      <q-card-section>
+      <q-input
+        outlined
+        v-model="editcantidad"
+        type="text"
+        placeholder="Cantidad de producto"
+        >
+        <template v-slot:prepend>
+          <q-icon name="inventory_2" />
+        </template>
+      </q-input>
+      </q-card-section>
+
+      <q-card-actions align="right">
+        <q-btn flat label="Modificar" color="primary" @click="editDetalle()" v-close-popup />
+        <q-btn flat label="Cancelar" color="primary" v-close-popup />
+      </q-card-actions>
+    </q-card>
+  </q-dialog>
+
+  <q-dialog v-model="modalBorrar" persistent>
+      <q-card>
+        <q-card-section class="row items-center">
+          <q-avatar icon="delete" color="primary" text-color="white" />
+          <span class="q-ml-sm">¿Está seguro quiere eliminar este producto de la caja?</span>
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn flat label="Cancelar" color="primary" v-close-popup />
+          <q-btn flat label="Eliminar" color="primary" @click="deleteDetalle()" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+
+
 
   
   </q-page>
@@ -194,8 +260,21 @@ export default {
         precioCompra: null,
         precioVenta: null,
       },
+      editproducto: {
+        nombre: null,
+        cantidad: null,
+        precioCompra: null,
+        precioVenta: null,
+      },
       idProducto: null,
-      cantidad: null
+      cantidad: null,
+      editcantidad: null,
+
+      agregar: false,
+      modificar: false,
+      modalBorrar: false,
+      idProductoBorrar:null,
+      idProductoEditar: null,
     }
   },
   methods:{
@@ -241,24 +320,48 @@ export default {
           this.ticket.detalleTickets.forEach((detalle) => {
             detalle.nombre=detalle.get_producto.nombre
           });
-          console.log(this.ticket);
         }
       })
       .catch((error) => {
           console.log(error.response.data);
       });
     },
-    editDetalle(id){
-      var url = 'detalleTickets/'+id;
+    modalDetalle(id){
+      this.idProductoEditar=id;
+      this.modificar = true;
+      this.ticket.detalleTickets.forEach((detalle) => {
+        if(this.idProductoEditar==detalle.id){
+          this.editproducto.id=detalle.id;
+          this.editproducto.nombre=detalle.nombre;
+          this.editproducto.precioCompra=detalle.get_producto.precioCompra;
+          this.editproducto.cantidad=detalle.get_producto.cantidad;
+          this.editproducto.precioVenta=detalle.get_producto.precioVenta;
+          this.editproducto.cantidad=detalle.get_producto.cantidad;
+          this.editcantidad = detalle.cantidad;
+        }
+      });
+    },
+    editDetalle(){
+      var url = 'detalleTickets/'+this.idProductoEditar;
       let data= {
-        nombre: "s"
+        "ticket": this.$route.params.id,
+        "producto": this.idProductoEditar,
+        "cantidad": this.editcantidad,
+        "precio": this.editproducto.precioVenta,
+        "total": this.editproducto.precioVenta*this.editcantidad
       };
+      this.editproducto.id="";
+      this.editproducto.nombre="";
+      this.editproducto.precioCompra="";
+      this.editproducto.cantidad="";
+      this.editproducto.precioVenta="";
+      this.editcantidad = "";
       const notif = Notify.create({
         type: 'ongoing',
         position: 'top-right',
         message: 'Esperando respuesta del servidor...'
       })
-      axios.put(url,this.obtenerConfig, data)
+      axios.put(url, data, this.obtenerConfig)
       .then((result)=>{
         if (result.data.success == true) {
           setTimeout(() => {
@@ -278,8 +381,12 @@ export default {
           }, 0)
       });
     },
-    deleteDetalle(id){
-      var url = 'detalleTickets/'+id;
+    modaldeleteDetalle(id){
+      this.modalBorrar= true;
+      this.idProductoBorrar=id;
+    },
+    deleteDetalle(){
+      var url = 'detalleTickets/'+this.idProductoBorrar;
       const notif = Notify.create({
         type: 'ongoing',
         position: 'top-right',
@@ -330,24 +437,11 @@ export default {
       });
     },
     actualizarProducto(){
-      const notif = Notify.create({
-        type: 'ongoing',
-        position: 'top-right',
-        message: 'Esperando respuesta del servidor...'
-      })
       this.producto = this.idProducto;
-      console.log(this.idProducto);
-      console.log(this.producto);
-      setTimeout(() => {
-        notif({
-          type: 'positive',
-          message: result.data.message,
-        })
-      }, 0)
-
     },
     agregarProducto(){
       var url = 'detalleTickets'
+      
       let post = {
         "ticket": this.$route.params.id,
         "producto": this.producto.id,
@@ -355,6 +449,13 @@ export default {
         "precio": this.producto.precioVenta,
         "total": this.producto.precioVenta*this.cantidad,
       };
+      this.idProducto="";
+      this.producto.id="";
+      this.producto.nombre="";
+      this.producto.precioCompra="";
+      this.producto.cantidad="";
+      this.producto.precioVenta="";
+      this.cantidad="";
       const notif = Notify.create({
         type: 'ongoing',
         position: 'top-right',
