@@ -39,6 +39,7 @@
 
 <script>
 import {mapActions, mapGetters} from 'vuex'
+import { Notify } from 'quasar'
 
 
 export default {
@@ -61,13 +62,29 @@ export default {
         login: 'auth/login'
       }),
       submit(){
+          const notif = Notify.create({
+            type: 'ongoing',
+            position: 'top-right',
+            message: 'Esperando respuesta del servidor...'
+          })
           this.login(this.user).then(() => {
             if(this.token!=null){
+              setTimeout(() => {
+                notif({
+                  type: 'positive',
+                  message: 'Ingresa con exito',
+                })
+              }, 0)
               this.$router.replace({
                   name: 'admin'
               })
             }else{
-              console.log('error en datos ingresados')
+              setTimeout(() => {
+                notif({
+                  type: 'negative',
+                  message: 'Error en datos ingresados',
+                })
+              }, 0)
             }
           })
       }

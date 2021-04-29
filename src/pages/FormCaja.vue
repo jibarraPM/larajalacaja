@@ -26,7 +26,7 @@
           <div class="q-gutter-y-md column " style="max-width: ">
             <q-input
               outlined
-              v-model="nombreFestejado"
+              v-model="receptor"
               type="text"
               placeholder="Nombre de quien recibe"
             >
@@ -41,40 +41,39 @@
 
               <q-card-section class="q-pt-none">
                 <div class="q-gutter-sm">
-                  <q-radio
-                    v-model="motivo"
-                    val="Cumpleaños"
-                    label="Cumpleaños"
-                  />
-                  <q-radio
-                    v-model="motivo"
-                    val="Bebé en camino"
-                    label="Bebé en camino"
-                  />
-                  <q-radio
-                    v-model="motivo"
-                    val="Bienvenid@ a la solteria"
-                    label="Bienvenid@ a la solteria"
-                  />
-                  <q-radio
-                    v-model="motivo"
-                    val="Día del Madre"
-                    label="Día del Madre"
-                  />
-                  <q-radio
-                    v-model="motivo"
-                    val="Día del Padre"
-                    label="Día del Padre"
-                  />
-                  <q-radio v-model="motivo" val="Navidad" label="Navidad" />
-                  <q-radio v-model="motivo" val="Otro" label="Otro" />
+                  <label v-for="Motivo in listaMotivos">
+                    <q-radio 
+                      v-model="motivo"
+                      :val="Motivo.id"
+                      :label="Motivo.nombre"
+                    />
+                  </label>
                 </div>
 
                 <div class="q-px-sm">
                   Tu seleccion es: <strong>{{ motivo }}</strong>
                 </div>
+                <q-tr v-show="motivo == '1'">
+
+                    <q-card-section>
+                      <div class="text-h6">Edad</div>
+                    </q-card-section>
+                    <q-input
+                      outlined
+                      v-model="edad"
+                      type="text"
+                      placeholder="Ingrese la edad"
+                      >
+                      <template v-slot:prepend>
+                        <q-icon name="face" />
+                      </template>
+                    </q-input>
+                  </q-tr>
               </q-card-section>
+              
             </q-card>
+
+
             <q-card flat bordered class="my-card">
               <q-card-section>
                 <div class="text-h6">Para Quién?</div>
@@ -82,15 +81,17 @@
 
               <q-card-section class="q-pt-none">
                 <div class="q-gutter-sm">
-                  <q-radio v-model="paraQuien" val="Mujer" label="Mujer" />
-                  <q-radio v-model="paraQuien" val="Hombre" label="Hombre" />
-                  <q-radio v-model="paraQuien" val="Niño" label="Niño" />
-                  <q-radio v-model="paraQuien" val="Niña" label="Niña" />
-                  <q-radio v-model="paraQuien" val="Otro" label="Otro" />
+                  <label v-for="TipoPersona in listaTipoPersonas">
+                    <q-radio 
+                      v-model="tipoPersona"
+                      :val="TipoPersona.id"
+                      :label="TipoPersona.nombre"
+                    />
+                  </label>
                 </div>
 
                 <div class="q-px-sm">
-                  Tu seleccion es: <strong>{{ paraQuien }}</strong>
+                  Tu seleccion es: <strong>{{ tipoPersona }}</strong>
                 </div>
               </q-card-section>
             </q-card>
@@ -117,10 +118,7 @@
           <q-stepper-navigation>
             <q-btn
               @click="
-                () => {
-                  done1 = true;
-                  step = 2;
-                }
+                triggerFase2()
               "
               color="primary"
               label="Continuar"
@@ -157,46 +155,18 @@
               <q-card-section class="q-pt-none">
                 <div class="q-pa-md">
                   <div class="q-gutter-sm">
-                    <q-checkbox
-                      v-model="caracteristica"
-                      val="Rockers"
-                      label="Rockers"
-                    />
-                    <q-checkbox
-                      v-model="caracteristica"
-                      val="Carreter@"
-                      label="Carreter@"
-                    />
-                    <q-checkbox
-                      v-model="caracteristica"
-                      val="Trabajolic@"
-                      label="Trabajolic@"
-                    />
-                    <q-checkbox
-                      v-model="caracteristica"
-                      val="Romántic@"
-                      label="Romántic@"
-                    />
-                    <q-checkbox
-                      v-model="caracteristica"
-                      val="Pretencios@"
-                      label="Pretencios@"
-                    />
-                    <q-checkbox
-                      v-model="caracteristica"
-                      val="Organizad@"
-                      label="Organizad@"
-                    />
-                    <q-checkbox
-                      v-model="caracteristica"
-                      val="Sexy"
-                      label="Sexy"
-                    />
+                    <label v-for="categoria in listaCategorias">
+                      <q-checkbox 
+                        v-model="categorias"
+                        :val="categoria.id"
+                        :label="categoria.nombre"
+                      />
+                    </label>
                   </div>
                 </div>
 
                 <div class="q-px-sm">
-                  Selección Actual <strong>{{ caracteristica }}</strong>
+                  Selección Actual <strong>{{ categorias }}</strong>
                 </div>
               </q-card-section>
             </q-card>
@@ -210,37 +180,18 @@
               <q-card-section class="q-pt-none">
                 <div class="q-pa-md">
                   <div class="q-gutter-sm">
-                    <q-checkbox
-                      v-model="pasatiempo"
-                      val="Cocinar"
-                      label="Cocinar"
-                    />
-                    <q-checkbox
-                      v-model="pasatiempo"
-                      val="Parrillar"
-                      label="Parrillar"
-                    />
-                    <q-checkbox
-                      v-model="pasatiempo"
-                      val="Hacer yoga"
-                      label="Hacer yoga"
-                    />
-                    <q-checkbox v-model="pasatiempo" val="Leer" label="Leer" />
-                    <q-checkbox
-                      v-model="pasatiempo"
-                      val="Tejer o bordar"
-                      label="Tejer o bordar"
-                    />
-                    <q-checkbox
-                      v-model="pasatiempo"
-                      val="Maquillaje"
-                      label="Maquillaje"
-                    />
+                    <label v-for="pasatiempo in listaPasatiempos">
+                      <q-checkbox 
+                        v-model="pasatiempos"
+                        :val="pasatiempo.id"
+                        :label="pasatiempo.nombre"
+                      />
+                    </label>
                   </div>
                 </div>
 
                 <div class="q-px-sm">
-                  Selección Actual <strong>{{ pasatiempo }}</strong>
+                  Selección Actual <strong>{{ pasatiempos }}</strong>
                 </div>
               </q-card-section>
             </q-card>
@@ -253,20 +204,30 @@
 
               <q-card-section class="q-pt-none">
                 <div class="q-pa-md">
-                  <div class="q-gutter-sm">
-                    <q-checkbox v-model="petLover" val="Gatos" label="Gatos" />
-                    <q-checkbox
-                      v-model="petLover"
-                      val="Perros"
-                      label="Perros"
-                    />
-                    <q-checkbox v-model="petLover" val="Otro" label="Otro" />
-                    <q-checkbox v-model="petLover" val="No" label="No" />
-                  </div>
-                </div>
+                  <q-tr v-show="mascota == 'false'">
+                    <q-card-section class="q-pt-none">
+                      <div class="q-gutter-sm">
+                        <q-radio v-model="mascota" val="true" label="Si" />
+                        <q-radio v-model="mascota" val="false" label="No" />
+                      </div>
+                    </q-card-section>
+                  </q-tr>
+                  
 
+                  <q-tr v-show="mascota == 'true'">
+                    <div class="q-gutter-sm">
+                      <label v-for="petLover in listaMascotas">
+                      <q-checkbox 
+                        v-model="petLovers"
+                        :val="petLover.id"
+                        :label="petLover.nombre"
+                      />
+                      </label>
+                    </div>
+                  </q-tr>
+                </div>
                 <div class="q-px-sm">
-                  Selección Actual <strong>{{ petLover }}</strong>
+                  Selección Actual <strong>{{ petLovers }}</strong>
                 </div>
               </q-card-section>
             </q-card>
@@ -280,22 +241,13 @@
               <q-card-section class="q-pt-none">
                 <div class="q-pa-md">
                   <div class="q-gutter-sm">
-                    <q-checkbox v-model="brindis" val="Vino" label="Vino" />
-                    <q-checkbox
-                      v-model="brindis"
-                      val="Espumante"
-                      label="Espumante"
-                    />
-                    <q-checkbox
-                      v-model="brindis"
-                      val="Sangría"
-                      label="Sangría"
-                    />
-                    <q-checkbox
-                      v-model="brindis"
-                      val="No toma"
-                      label="No toma"
-                    />
+                    <label v-for="brindi in listaBrindis">
+                      <q-checkbox 
+                        v-model="brindis"
+                        :val="brindi.id"
+                        :label="brindi.nombre"
+                      />
+                    </label>
                   </div>
                 </div>
 
@@ -314,39 +266,25 @@
               <q-card-section class="q-pt-none">
                 <div class="q-pa-md">
                   <div class="q-gutter-sm">
-                    <q-checkbox
-                      v-model="preferencia"
-                      val="Chocolates"
-                      label="Chocolates"
-                    />
-                    <q-checkbox
-                      v-model="preferencia"
-                      val="Paletas o dulces"
-                      label="Paletas o dulces"
-                    />
-                    <q-checkbox
-                      v-model="preferencia"
-                      val="Salado"
-                      label="Salado"
-                    />
-                    <q-checkbox
-                      v-model="preferencia"
-                      val="Ninguna"
-                      label="Ninguna"
-                    />
-                    <q-checkbox v-model="preferencia" val="Otro" label="Otro" />
+                    <label v-for="preferencia in listaPreferencias">
+                      <q-checkbox 
+                        v-model="preferencias"
+                        :val="preferencia.id"
+                        :label="preferencia.nombre"
+                      />
+                    </label>
                   </div>
                 </div>
 
                 <div class="q-px-sm">
-                  Selección Actual <strong>{{ preferencia }}</strong>
+                  Selección Actual <strong>{{ preferencias }}</strong>
                 </div>
               </q-card-section>
             </q-card>
 
             <q-input
               outlined
-              v-model="noIncluir"
+              v-model="excepcion"
               type="text"
               placeholder="Ni por nada (Algo con azúcar, lactosa o de color rosado)"
             >
@@ -386,25 +324,6 @@
               </q-card-section>
             </q-card>
 
-            <q-card flat bordered class="my-card">
-              <q-card-section>
-                <div class="text-h6">Fecha de Nacimiento</div>
-              </q-card-section>
-
-              <q-card-section class="q-pt-none">
-                <q-input
-                  outlined
-                  v-model="nacimiento"
-                  type="date"
-                  placeholder="Fecha de Nacimiento"
-                >
-                  <template v-slot:prepend>
-                    <q-icon name="event" />
-                  </template>
-                </q-input>
-              </q-card-section>
-            </q-card>
-
             <q-input
               outlined
               v-model="mensaje"
@@ -420,17 +339,16 @@
           <q-stepper-navigation>
             <q-btn
               @click="
-                () => {
-                  done2 = true;
-                  step = 3;
-                }
+                triggerFase3()
               "
               color="primary"
               label="Continuar"
             />
             <q-btn
               flat
-              @click="step = 1"
+              @click="
+                triggerFase1()
+              "
               color="primary"
               label="Volver"
               class="q-ml-sm"
@@ -456,6 +374,17 @@
               </template>
             </q-input>
 
+            <q-input
+              outlined
+              v-model="email"
+              type="text"
+              placeholder="Ingresa tu email"
+            >
+              <template v-slot:prepend>
+                <q-icon name="insert_emoticon" />
+              </template>
+            </q-input>
+
             <q-card flat bordered class="my-card">
               <q-card-section>
                 <div class="text-h6">Tipo de Caja</div>
@@ -464,21 +393,13 @@
               <q-card-section class="q-pt-none">
                 <div class="q-pa-md">
                   <div class="q-gutter-sm">
-                    <q-radio
-                      v-model="tipoCaja"
-                      val="Caja Ligth"
-                      label="Caja Ligth"
-                    />
-                    <q-radio
-                      v-model="tipoCaja"
-                      val="Caja Medium"
-                      label="Caja Medium"
-                    />
-                    <q-radio
-                      v-model="tipoCaja"
-                      val="Caja Premium"
-                      label="Caja Premium"
-                    />
+                    <label v-for="TipoCaja in listaTipoCajas">
+                      <q-radio 
+                        v-model="tipoCaja"
+                        :val="TipoCaja.id"
+                        :label="TipoCaja.nombre + ' (' + TipoCaja.precio+ ')'"
+                      />         
+                    </label>           
                   </div>
 
                   <div class="q-px-sm">
@@ -490,7 +411,7 @@
 
             <q-card flat bordered class="my-card">
               <q-card-section>
-                <div class="text-h6">Feche de Entrega</div>
+                <div class="text-h6">Fecha de Recepción</div>
               </q-card-section>
 
               <q-card-section class="q-pt-none">
@@ -562,10 +483,10 @@
                       <div class="text-subtitle2">Datos de envio</div>
                     </q-card-section>
                     <div class="q-pa-md">
-                      <p>Nombre Destinatario: {{ nombreFestejado }}</p>
+                      <p>Nombre Destinatario: {{ receptor }}</p>
                       <p>Fecha de entrega: {{ fechaEntrega }}</p>
                       <p>Region: {{ region.label }}</p>
-                      <p>Comuna: {{ comuna.lavel }}</p>
+                      <p>Comuna: {{ comuna.label }}</p>
                       <p>Direccion de envio {{ direccionEnvio }}</p>
                       <p>Telefono de envio: {{ telefonoEnvio }}</p>
                     </div>
@@ -574,9 +495,12 @@
                     </q-card-section>
                     <div class="q-pa-md">
                       <p>Motivo: {{ motivo }}</p>
-                      <p>Para quien: {{ paraQuien }}</p>
+                      <p>Para quien: {{ tipoPersona }}</p>
                       <p>Mensaje: {{ mensaje }}</p>
+                      <p>Valor caja: {{ listaTipoCajas[tipoCaja].precio }}</p>
+                      <p>Envio: {{ 0 }}</p>
                     </div>
+
                   </q-card>
 
                   <q-card-actions align="right">
@@ -591,12 +515,14 @@
             <q-btn label="Detalles" color="primary" @click="alert = true" />
             <q-btn
               flat
-              @click="step = 2"
+              @click="
+                triggerFase2()
+              "
               color="primary"
               label="Volver"
               class="q-ml-sm"
             />
-            <q-btn color="primary" @click="done3 = true" label="Finalizar" />
+            <q-btn color="primary" @click="crearTicket()" label="Finalizar" />
           </q-stepper-navigation>
         </q-step>
       </q-stepper>
@@ -606,6 +532,8 @@
 
 <script>
 import axios from "axios";
+import { Notify } from 'quasar'
+
 export default {
   name: "PageIndex",
   data() {
@@ -615,25 +543,29 @@ export default {
       done2: false,
       done3: false,
 
-      nombreFestejado: "",
+
+      receptor: "",
+      receptor: "",
       motivo: "",
-      paraQuien: "",
+      tipoPersona: "",
       nacimiento: "",
       color: "",
+      edad: "",
 
-      caracteristica: [],
-      pasatiempo: [],
-      petLover: [],
+      categorias: [],
+      pasatiempos: [],
+      petLovers: [4],
       brindis: [],
-      preferencia: [],
+      preferencias: [],
 
       pyme: "",
       foto: null,
-      noIncluir: "",
+      excepcion: "",
       mensaje: "",
 
+      email: "",
       nombreComprador: "",
-      tipoCaja: "Caja Medium",
+      tipoCaja: 2,
       fechaEntrega: "",
       region: "",
       comuna: "",
@@ -645,11 +577,55 @@ export default {
       direccionEnvio: "",
       telefonoEnvio: "",
 
-      alert: false
+      alert: false,
+
+      mascota: 'false',
+
+      //lista de objetos que son dinamicos, estos provenientes de la api
+      listaCategorias:[],
+      listaPasatiempos:[],
+      listaBrindis:[],
+      listaPreferencias:[],
+      listaMascotas:[],
+      listaMotivos:[],
+      listaTipoPersonas:[],
+      listaTipoCajas:[
+        {
+          precio: 0
+        },  {
+          precio: 0
+        },{
+          precio: 0
+        }]
     };
   },
 
   methods: {
+    triggerFase1() {
+      
+      Notify.create({
+        type: 'info',
+        position: 'top-right',
+        message: `Fase 1: Datos del receptor.`
+      })
+      this.step = 1;
+    },
+    triggerFase2() {
+      Notify.create({
+        type: 'info',
+        position: 'top-right',
+        message: `Fase 2: Gustos del receptor.`
+      })
+      this.step = 2;
+    },
+    triggerFase3() {
+      Notify.create({
+        type: 'info',
+        position: 'top-right',
+        message: `Fase 3: Datos de la compra.`
+      })
+      this.step = 3;
+    },
     reset() {
       this.done1 = false;
       this.done2 = false;
@@ -677,7 +653,252 @@ export default {
         this.error = error;
       }
     },
-    actualizarRegion() {}
+    actualizarRegion() {
+
+    },
+    crearTicket(){
+      var url = 'tickets';
+      var pymeaux;
+      if(this.pyme=="no"){
+        pymeaux = 0;
+      }else{
+        pymeaux = 1;
+      }
+      let post = {
+        "email": this.email,
+        "receptor": this.receptor,
+        "emisor": this.nombreComprador,
+        "edad": this.edad,
+        "nacimiento": this.nacimiento,
+        "color": this.color,
+        "excepcion": this.excepcion,
+        "pyme": pymeaux,
+        "foto": this.foto,
+        "mensaje": this.mensaje,
+        "entrega": this.fechaEntrega,
+        "region": this.region.label,
+        "comuna": this.comuna.label,
+        "direccion": this.direccionEnvio,
+        "telefono": this.telefonoEnvio,
+        "estado": 1,
+        "tipoCaja": this.tipoCaja,
+        "tipoPersona": this.tipoPersona,
+        "motivo": this.motivo,
+        "categorias": this.categorias,
+        "pasatiempos": this.pasatiempos,
+        "brindis": this.brindis,
+        "preferencias": this.preferencias,
+        "mascotas": this.petLovers
+      };
+      const notif = Notify.create({
+        type: 'ongoing',
+        position: 'top-right',
+        message: 'Esperando respuesta del servidor...'
+      })
+      axios.post(url,post,this.obtenerConfig)
+      .then((result)=>{
+          if (result.data.success == true)  {
+            console.log(result);
+            setTimeout(() => {
+              notif({
+                type: 'positive',
+                message: result.data.message,
+              })
+            }, 0)
+          }
+      })
+      .catch((error)=>{
+          setTimeout(() => {
+            notif({
+              type: 'negative',
+              message: error.response.data.message,
+            })
+          }, 0)
+      });
+    },
+    obtenerCategorias(){
+      var url = 'categorias';
+      this.listaCategoriasAux = [];
+      axios.get(url,this.obtenerConfig)
+      .then((result)=>{
+        if (result.data.success == true) {
+          for (let index = 0; index < result.data.data.categorias.length; index++) {
+              const element = result.data.data.categorias[index];
+              let categoria = {
+                  id: element.id,
+                  nombre: element.nombre,
+              };
+              this.listaCategoriasAux[index]=categoria;
+          }
+          this.listaCategorias = this.listaCategoriasAux;
+        }
+      })
+      .catch((error) => {
+          console.log(error.response.data);
+      });
+    },
+    obtenerPasatiempos(){
+      var url = 'pasatiempos';
+      this.listaPasatiemposAux = [];
+      axios.get(url,this.obtenerConfig)
+      .then((result)=>{
+        if (result.data.success == true) {
+          for (let index = 0; index < result.data.data.pasatiempos.length; index++) {
+              const element = result.data.data.pasatiempos[index];
+              let pasatiempo = {
+                  id: element.id,
+                  nombre: element.nombre,
+              };
+              this.listaPasatiemposAux[index]=pasatiempo;
+          }
+          this.listaPasatiempos = this.listaPasatiemposAux;
+        }
+      })
+      .catch((error) => {
+          console.log(error.response.data);
+      });
+    },
+    obtenerBrindis(){
+      var url = 'brindis';
+      this.listaBrindisAux = [];
+      axios.get(url,this.obtenerConfig)
+      .then((result)=>{
+        if (result.data.success == true) {
+          for (let index = 0; index < result.data.data.brindis.length; index++) {
+              const element = result.data.data.brindis[index];
+              let brindi = {
+                  id: element.id,
+                  nombre: element.nombre,
+              };
+              this.listaBrindisAux[index]=brindi;
+          }
+          this.listaBrindis = this.listaBrindisAux;
+        }
+      })
+      .catch((error) => {
+          console.log(error.response.data);
+      });
+    },
+    obtenerPreferencias(){
+      var url = 'preferencias';
+      this.listaPreferenciasAux = [];
+      axios.get(url,this.obtenerConfig)
+      .then((result)=>{
+        if (result.data.success == true) {
+          for (let index = 0; index < result.data.data.preferencias.length; index++) {
+              const element = result.data.data.preferencias[index];
+              let preferencia = {
+                  id: element.id,
+                  nombre: element.nombre,
+              };
+              this.listaPreferenciasAux[index]=preferencia;
+          }
+          this.listaPreferencias = this.listaPreferenciasAux;
+        }
+      })
+      .catch((error) => {
+          console.log(error.response.data);
+      });
+    },
+    obtenerMascotas(){
+      var url = 'mascotas';
+      this.listaMascotasAux = [];
+      axios.get(url,this.obtenerConfig)
+      .then((result)=>{
+        if (result.data.success == true) {
+          for (let index = 0; index < result.data.data.mascotas.length; index++) {
+              const element = result.data.data.mascotas[index];
+              let mascota = {
+                  id: element.id,
+                  nombre: element.nombre,
+              };
+              this.listaMascotasAux[index]=mascota;
+          }
+          this.listaMascotas = this.listaMascotasAux;
+        }
+      })
+      .catch((error) => {
+          console.log(error.response.data);
+      });
+    },
+    obtenerMotivo(){
+      var url = 'motivos';
+      this.listaMotivosAux = [];
+      axios.get(url,this.obtenerConfig)
+      .then((result)=>{
+        if (result.data.success == true) {
+          for (let index = 0; index < result.data.data.motivos.length; index++) {
+              const element = result.data.data.motivos[index];
+              let motivo = {
+                  id: element.id,
+                  nombre: element.nombre,
+              };
+              this.listaMotivosAux[index]=motivo;
+          }
+          this.listaMotivos = this.listaMotivosAux;
+        }
+      })
+      .catch((error) => {
+          console.log(error.response.data);
+      });
+    },
+    obtenerTipoPersona(){
+      var url = 'tipopersonas';
+      this.listaTipoPersonaAux = [];
+      axios.get(url,this.obtenerConfig)
+      .then((result)=>{
+        if (result.data.success == true) {
+          for (let index = 0; index < result.data.data.tipoPersonas.length; index++) {
+              const element = result.data.data.tipoPersonas[index];
+              let tipoPersona = {
+                  id: element.id,
+                  nombre: element.nombre,
+              };
+              this.listaTipoPersonaAux[index]=tipoPersona;
+          }
+          this.listaTipoPersonas = this.listaTipoPersonaAux;
+        }
+      })
+      .catch((error) => {
+          console.log(error.response.data);
+      });
+    },
+    obtenerTipoCaja(){
+      var url = 'tipocajas';
+      this.listaTipoCajasAux = [];
+      axios.get(url,this.obtenerConfig)
+      .then((result)=>{
+        if (result.data.success == true) {
+          for (let index = 0; index < result.data.data.tipoCajas.length; index++) {
+              const element = result.data.data.tipoCajas[index];
+              let tipocaja = {
+                  id: element.id,
+                  nombre: element.nombre,
+                  precio: element.precio
+              };
+              this.listaTipoCajasAux[index]=tipocaja;
+          }
+          this.listaTipoCajas = this.listaTipoCajasAux;
+        }
+      })
+      .catch((error) => {
+          console.log(error.response.data);
+      });
+    }
+
+
+  },
+  beforeMount(){
+    //Nota: estas funciones se pueden demorar en ejecutarse, esto quiere decir que no espera a que termine para mostrar los datos, dado a que es a 2 tiempos
+    //me refiero a que primero llena los datos como nombre y cantidad, no deberia darse cuenta de esto, el tiempo es relativamente corto, depende del internet obviamente
+    this.obtenerTipoCaja();
+    this.obtenerCategorias();
+    this.obtenerPasatiempos();
+    this.obtenerBrindis();
+    this.obtenerPreferencias();
+    this.obtenerMascotas();
+    this.obtenerMotivo();
+    this.obtenerTipoPersona();
   },
 
   async mounted() {
