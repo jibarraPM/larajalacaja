@@ -59,6 +59,17 @@
 " />
               </template>
             </q-input>
+            <q-input
+              outlined
+              v-model="foto"
+              type="text"
+              placeholder="Ingrese link de imagen de producto"
+            >
+              <template v-slot:prepend>
+                <q-icon name="backup
+" />
+              </template>
+            </q-input>
 
        </div>
         
@@ -227,7 +238,7 @@ export default {
       cantidad: '',
       precioCompra: '',
       precioVenta: '',
-      foto: 'vacio',
+      foto: '',
 
       categorias: [],
       pasatiempos: [],

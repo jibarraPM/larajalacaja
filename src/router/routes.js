@@ -27,6 +27,12 @@ const routes = [{
                     import ('pages/FormCaja.vue')
             },
             {
+                name: 'mediopago',
+                path: '/mediopago',
+                component: () =>
+                    import ('pages/MedioPago.vue')
+            },
+            {
                 name: 'tickets',
                 path: '/tickets',
                 component: () =>
