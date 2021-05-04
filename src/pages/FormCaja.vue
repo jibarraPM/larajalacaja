@@ -56,7 +56,7 @@
                 <q-tr v-show="motivo == '1'">
 
                     <q-card-section>
-                      <div class="text-h6">Edad</div>
+                      <div class="text-h6">Indique la edad que cumple</div>
                     </q-card-section>
                     <q-input
                       outlined
@@ -97,7 +97,7 @@
             </q-card>
             <q-card flat bordered class="my-card">
               <q-card-section>
-                <div class="text-h6">Fecha de Nacimiento</div>
+                <div class="text-h6">Fecha de Nacimiento (Puede omitirse)</div>
               </q-card-section>
 
               <q-card-section class="q-pt-none">
@@ -148,7 +148,7 @@
             <q-card flat bordered class="my-card">
               <q-card-section>
                 <div class="text-h6">
-                  Caracteristicas que definen a la persona
+                  Indícanos esas 3 características que definan a tu persona favorita
                 </div>
               </q-card-section>
 
@@ -160,6 +160,7 @@
                         v-model="categorias"
                         :val="categoria.id"
                         :label="categoria.nombre"
+                       
                       />
                     </label>
                   </div>
@@ -173,7 +174,7 @@
             <q-card flat bordered class="my-card">
               <q-card-section>
                 <div class="text-h6">
-                  Pasatiempos
+                  Indícanos esos 3 pasatiempos que definan a tu persona favorita
                 </div>
               </q-card-section>
 
@@ -234,7 +235,7 @@
             <q-card flat bordered class="my-card">
               <q-card-section>
                 <div class="text-h6">
-                  Para Hacer Salud
+                  Y para hacer salu´
                 </div>
               </q-card-section>
 
@@ -259,7 +260,7 @@
             <q-card flat bordered class="my-card">
               <q-card-section>
                 <div class="text-h6">
-                  Preferencia
+                  Alguna preferencia
                 </div>
               </q-card-section>
 
@@ -295,13 +296,13 @@
 
             <q-card flat bordered class="my-card">
               <q-card-section>
-                <div class="text-h6">Deseas que tu caja apoye a una pyme</div>
+                <div class="text-h6">Prefieres Pymes o te da lo mimo</div>
               </q-card-section>
 
               <q-card-section class="q-pt-none">
                 <div class="q-gutter-sm">
-                  <q-radio v-model="pyme" val="Si" label="Si" />
-                  <q-radio v-model="pyme" val="No" label="No" />
+                  <q-radio v-model="pyme" val="Pymes" label="Pymes" />
+                  <q-radio v-model="pyme" val="No importa" label="No importa" />
                 </div>
 
                 <div class="q-px-sm">
@@ -313,14 +314,13 @@
             <q-card flat bordered class="my-card">
               <q-card-section>
                 <div class="text-h6">Incluir Foto</div>
+                <q-radio v-model="foto" val="S" label="si" />
+                <q-radio v-model="foto" val="No importa" label="No" />
               </q-card-section>
 
               <q-card-section class="q-pt-none">
-                <q-file color="purple-12" v-model="foto" label="Subir foto">
-                  <template v-slot:prepend>
-                    <q-icon name="add_photo_alternate" />
-                  </template>
-                </q-file>
+                
+                <q-p> Enviar foto por Redes Sociales o al correo fotos@larajalacaja.cl</q-p>
               </q-card-section>
             </q-card>
 
@@ -392,6 +392,7 @@
 
               <q-card-section class="q-pt-none">
                 <div class="q-pa-md">
+                  
                   <div class="q-gutter-sm">
                     <label v-for="TipoCaja in listaTipoCajas">
                       <q-radio 
@@ -399,7 +400,15 @@
                         :val="TipoCaja.id"
                         :label="TipoCaja.nombre + ' (' + TipoCaja.precio+ ')'"
                       />         
-                    </label>           
+                    </label> 
+
+                    <q-select
+                      v-model="tipoCaja"
+                      :options="listaTipoCajas"
+                      
+                    >
+                       
+                      </q-select>          
                   </div>
 
                   <div class="q-px-sm">
@@ -411,7 +420,7 @@
 
             <q-card flat bordered class="my-card">
               <q-card-section>
-                <div class="text-h6">Fecha de Recepción</div>
+                <div class="text-h6">Fecha de Entrega</div>
               </q-card-section>
 
               <q-card-section class="q-pt-none">
@@ -498,13 +507,15 @@
                       <p>Para quien: {{ tipoPersona }}</p>
                       <p>Mensaje: {{ mensaje }}</p>
                       <p>Valor caja: {{ listaTipoCajas[tipoCaja].precio }}</p>
-                      <p>Envio: {{ 0 }}</p>
+                      <p>Costo de Despacho: {{ 0 }}</p>
                     </div>
 
                   </q-card>
 
                   <q-card-actions align="right">
-                    <q-btn flat label="OK" color="primary" v-close-popup />
+                    <q-btn flat label="volver" color="primary" v-close-popup />
+                    <q-btn flat label="Finalizar" @click="crearTicket()" color="primary" v-close-popup  />
+                    
                   </q-card-actions>
                 </q-card>
               </q-dialog>
@@ -512,7 +523,7 @@
           </div>
 
           <q-stepper-navigation>
-            <q-btn label="Detalles" color="primary" @click="alert = true" />
+
             <q-btn
               flat
               @click="
@@ -522,7 +533,7 @@
               label="Volver"
               class="q-ml-sm"
             />
-            <q-btn color="primary" @click="crearTicket()" label="Finalizar" />
+            <q-btn color="primary" @click="alert = true" label="Confirmar" />
           </q-stepper-navigation>
         </q-step>
       </q-stepper>
@@ -559,7 +570,7 @@ export default {
       preferencias: [],
 
       pyme: "",
-      foto: null,
+      foto: "",
       excepcion: "",
       mensaje: "",
 
