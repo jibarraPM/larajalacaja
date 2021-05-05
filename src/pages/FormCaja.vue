@@ -80,15 +80,18 @@
               </q-card-section>
 
               <q-card-section class="q-pt-none">
+                <div id="1">
                 <div class="q-gutter-sm">
                   <label v-for="TipoPersona in listaTipoPersonas">
                     <q-radio 
                       v-model="tipoPersona"
                       :val="TipoPersona.id"
                       :label="TipoPersona.nombre"
+                      @input="v=>{tipoMujer()}"
                     />
                   </label>
                 </div>
+                 </div>
 
                 <div class="q-px-sm">
                   Tu seleccion es: <strong>{{ tipoPersona }}</strong>
@@ -160,7 +163,8 @@
                         v-model="categorias"
                         :val="categoria.id"
                         :label="categoria.nombre"
-                       
+                        :disabled="categorias.length > 3" 
+                        @input="v=>{eliminarUltimoElementoCategorias()}"
                       />
                     </label>
                   </div>
@@ -186,6 +190,8 @@
                         v-model="pasatiempos"
                         :val="pasatiempo.id"
                         :label="pasatiempo.nombre"
+                        :disabled="pasatiempos.length > 3" 
+                        @input="v=>{eliminarUltimoElementoPasatiempo()}"
                       />
                     </label>
                   </div>
@@ -394,21 +400,18 @@
                 <div class="q-pa-md">
                   
                   <div class="q-gutter-sm">
-                    <label v-for="TipoCaja in listaTipoCajas">
-                      <q-radio 
-                        v-model="tipoCaja"
-                        :val="TipoCaja.id"
-                        :label="TipoCaja.nombre + ' (' + TipoCaja.precio+ ')'"
-                      />         
-                    </label> 
 
                     <q-select
                       v-model="tipoCaja"
                       :options="listaTipoCajas"
-                      
-                    >
-                       
-                      </q-select>          
+                      label="Caja"
+                      emit-value
+                      map-options
+                      option-value="id"
+                      option-label="nombreImpreso"
+                    />
+
+
                   </div>
 
                   <div class="q-px-sm">
@@ -503,11 +506,11 @@
                       <div class="text-subtitle2">Datos de La Caja</div>
                     </q-card-section>
                     <div class="q-pa-md">
-                      <p>Motivo: {{ motivo }}</p>
-                      <p>Para quien: {{ tipoPersona }}</p>
+                      <p>Motivo: {{ this.listaMotivos[motivo-1].nombre }}</p>
+                      <p>Para quien: {{ this.listaTipoPersonas[tipoPersona-1].nombre }}</p>
                       <p>Mensaje: {{ mensaje }}</p>
-                      <p>Valor caja: {{ listaTipoCajas[tipoCaja].precio }}</p>
-                      <p>Costo de Despacho: {{ 0 }}</p>
+                      <p>Valor caja: ${{ listaTipoCajas[tipoCaja-1].precio }}</p>
+                      <p>Costo de Despacho: ${{ 0 }}</p>
                     </div>
 
                   </q-card>
@@ -597,6 +600,8 @@ export default {
       listaPasatiempos:[],
       listaBrindis:[],
       listaPreferencias:[],
+      listaPreferenciasConSal:[],
+      listaPreferenciasSinSal:[],
       listaMascotas:[],
       listaMotivos:[],
       listaTipoPersonas:[],
@@ -796,13 +801,19 @@ export default {
       axios.get(url,this.obtenerConfig)
       .then((result)=>{
         if (result.data.success == true) {
-          for (let index = 0; index < result.data.data.preferencias.length; index++) {
+          for (let index = 0, indexAux = 0; index < result.data.data.preferencias.length; index++, indexAux++) {
               const element = result.data.data.preferencias[index];
               let preferencia = {
                   id: element.id,
                   nombre: element.nombre,
               };
               this.listaPreferenciasAux[index]=preferencia;
+              if(preferencia.nombre!='Salados'){
+                this.listaPreferenciasSinSal[indexAux]=preferencia;
+              }else{
+                indexAux--;
+              }
+              this.listaPreferenciasConSal[index]=preferencia;
           }
           this.listaPreferencias = this.listaPreferenciasAux;
         }
@@ -885,16 +896,39 @@ export default {
               let tipocaja = {
                   id: element.id,
                   nombre: element.nombre,
-                  precio: element.precio
+                  precio: element.precio,
+                  nombreImpreso: element.nombre + " ($" + element.precio + ")"
               };
               this.listaTipoCajasAux[index]=tipocaja;
           }
           this.listaTipoCajas = this.listaTipoCajasAux;
+          console.log(this.listaTipoCajas)
         }
       })
       .catch((error) => {
           console.log(error.response.data);
       });
+    },
+    tipoMujer(){
+      console.log(this.listaPreferenciasSinSal);
+      console.log(this.listaPreferenciasConSal);
+      if(this.tipoPersona==1){
+        this.listaPreferencias = this.listaPreferenciasSinSal;
+      }else{
+        this.listaPreferencias = this.listaPreferenciasConSal;
+      }
+      this.$forceUpdate();
+
+    },
+    eliminarUltimoElementoCategorias(){
+      if(this.categorias.length==4){
+        this.categorias.pop();
+      }
+    },
+    eliminarUltimoElementoPasatiempo(){
+      if(this.pasatiempos.length==4){
+        this.pasatiempos.pop();
+      }
     }
 
 
