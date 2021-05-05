@@ -266,7 +266,7 @@
             <q-card flat bordered class="my-card">
               <q-card-section>
                 <div class="text-h6">
-                  Alguna preferencia
+                  Algo para endulzar la vida?
                 </div>
               </q-card-section>
 
@@ -293,7 +293,7 @@
               outlined
               v-model="excepcion"
               type="text"
-              placeholder="Ni por nada (Algo con azúcar, lactosa o de color rosado)"
+              placeholder="Ni por nada (Por ejemplo: Algo con azúcar, lactosa o de color rosado)"
             >
               <template v-slot:prepend>
                 <q-icon name="cancel" />
@@ -319,7 +319,7 @@
 
             <q-card flat bordered class="my-card">
               <q-card-section>
-                <div class="text-h6">Incluir Foto</div>
+                <div class="text-h6">Quieres agregarle una foto a la caja?</div>
                 <q-radio v-model="foto" val="S" label="si" />
                 <q-radio v-model="foto" val="No importa" label="No" />
               </q-card-section>

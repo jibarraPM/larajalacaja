@@ -52,38 +52,38 @@ import EssentialLink from 'components/EssentialLink.vue'
 const linksData = [
   {
     title: 'Inicio',
-    caption: 'Información general',
+    caption: 'Página de Inicio',
     icon: 'home',
     link: '/admin'
   },
   {
-    title: 'form',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
+    title: 'Formulario',
+    caption: 'Formulario de las cajas',
+    icon: 'list_alt',
     link: '/form'
   },
   {
-    title: 'tickets',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
+    title: 'Tickets',
+    caption: 'Información sobre los tickets',
+    icon: 'assignment_turned_in',
     link: '/tickets'
   },
   {
-    title: 'productos',
+    title: 'Productos',
     caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
+    icon: 'inventory_2',
     link: '/productos'
   },
   {
-    title: 'addProducto',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
+    title: 'Agregar producto',
+    caption: 'agrega un nuevo producto al inventario disponible',
+    icon: 'add_box',
     link: '/addProducto'
   },
   {
-    title: 'login',
-    caption: '@QuasarFramework',
-    icon: 'public',
+    title: 'Ingresar',
+    caption: 'Ingreso al sistema',
+    icon: 'login',
     link: '/login'
   },
 ];
