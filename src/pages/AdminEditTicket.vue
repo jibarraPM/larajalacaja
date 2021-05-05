@@ -2,13 +2,72 @@
   
   <q-page class="">
 
-    <q-toolbar inset>
-        <q-toolbar-title> Nota del ticket </q-toolbar-title>
-      </q-toolbar>
+    <h3 class="text-center">Detalles del Ticket  N#</h3>
 
-    <div class="q-pa-md q-gutter-sm">
+      <div class="q-pa-md">
+    <q-card class="my-card">
+      <q-card-section>
+        <div class="text-h6 text-center">Información Destacada</div>
+      </q-card-section>
 
+      <q-tabs v-model="info" class="text-teal">
+        <q-tab label="Información Caja" name="uno" />
+        <q-tab label="Información Cliente" name="dos" />
+        <q-tab label="Información Despacho" name="tres" />
+      </q-tabs>
+
+      <q-separator />
+
+      <q-tab-panels v-model="info" animated>
+        <q-tab-panel name="uno">
+          <div class="row">
+        <div class="col">
+          Valor Venta: {{ticket.valor}}
+        </div>
+        <div class="col">
+          Valor Costo: {{ticket.valor}}
+        </div>
+        <div class="col">
+          Ganancia Neta: {{ticket.valor}}
+        </div>
+      </div>
       <div class="row">
+        <div class="col">
+          Ganancia Neta: {{ticket.valor}}
+        </div>
+        <div class="col">
+          Porcentaje de utilidad: {{ticket.valor}}
+        </div>
+        <div class="col">
+          Cantidad Producto: {{ticket.cantidadProducto}}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          Pyme: {{ticket.pyme}}
+        </div>
+        <div class="col">
+          Impustos %: {{ticket.valor}}
+        </div>
+        <div class="col">
+          Costo Envio: {{ticket.telefono}}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          Forma de Pago: {{ticket.pyme}}
+        </div>
+        <div class="col">
+          Estado del Pago: {{ticket.pyme}}
+        </div>
+        <div class="col">
+          
+        </div>
+      </div>
+        </q-tab-panel>
+
+        <q-tab-panel name="dos">
+          <div class="row">
         <div class="col">
           Email: {{ ticket.email}}
         </div>
@@ -19,7 +78,6 @@
           Emisor: {{ ticket.emisor}}
         </div>
       </div>
-
       <div class="row">
         <div class="col">
           Nacimiento: {{ticket.nacimiento}}
@@ -30,20 +88,53 @@
         <div class="col">
           Excepcion: {{ticket.excepcion}}
         </div>
-      </div>
 
+      </div>
       <div class="row">
-        <div class="col">
-          Pyme: {{ticket.pyme}}
-        </div>
+        
         <div class="col">
           Mensaje: {{ticket.mensaje}}
         </div>
+        
+        <div class="col"></div>
+      </div>
+        </q-tab-panel>
+        <q-tab-panel name="tres">
+          <div class="row">
+          <div class="col">
+          Costo Envio: {{ticket.telefono}}
+        </div>
         <div class="col">
-          Fecha de Recepción: {{ticket.entrega}}
+          Telefono: {{ticket.telefono}}
+        </div>
+        
+        <div class="col">
+          Fecha de Despacho: {{ticket.entrega}}
+        </div>
+        
+      </div>
+      <div class="row">
+        <div class="col">
+          Despacho Operador: {{ticket.region}}
+        </div>
+        <div class="col">
+          Costo Despacho: {{ticket.comuna}}
+        </div>
+        <div class="col">
+          Valor Despacho: {{ticket.dºireccion}}
         </div>
       </div>
-
+      <div class="row">
+        <div class="col">
+          Finacia el Despacho: {{ticket.region}}
+        </div>
+        <div class="col">
+          Estado del Despacho: {{ticket.comuna}}
+        </div>
+        <div class="col">
+          
+        </div>
+      </div>
       <div class="row">
         <div class="col">
           Region: {{ticket.region}}
@@ -52,23 +143,15 @@
           Comuna: {{ticket.comuna}}
         </div>
         <div class="col">
-          Direccion: {{ticket.direccion}}
+          Direccion: {{ticket.dºireccion}}
         </div>
       </div>
+        </q-tab-panel>
+      </q-tab-panels>
+    </q-card>
+  </div>
 
-      <div class="row">
-        <div class="col">
-          Telefono: {{ticket.telefono}}
-        </div>
-        <div class="col">
-          Valor: {{ticket.valor}}
-        </div>
-        <div class="col">
-          Cantidad Producto: {{ticket.cantidadProducto}}
-        </div>
-      </div>
 
-    </div>
     
     <div class="q-pa-md q-gutter-sm">
       <q-btn color="primary" icon="inventory_2" @click="agregar = true" label="Agregar Producto"/>
@@ -140,6 +223,8 @@
       <q-card-section>
           Nombre: {{ producto.nombre }}
       </q-card-section>
+      
+      
       <q-card-section>
           cantidad inventario: {{ producto.cantidad }}
       </q-card-section>
@@ -235,6 +320,7 @@ export default {
   name: 'PageIndex',
   data () {
     return {
+      info: 'uno',
       columns2: [
         {
           name: 'desc',
@@ -246,9 +332,16 @@ export default {
           sortable: true
         },
         { name: 'nombre', align: 'center', label: 'Nombre', field: 'nombre', sortable: true },
+        { name: 'foto', align: 'center', label: 'Foto', field: 'foto', sortable: true },
         { name: 'cantidad', align: 'center', label: 'Cantidad', field: 'cantidad', sortable: true, },
         { name: 'precio', align: 'center', label: 'Precio', field: 'precio', sortable: true },
-        { name: 'total', align: 'center', label: 'Total', field: 'total', sortable: true }
+        
+        { name: 'total', label: 'Valor costo', field: 'total', sortable: true, style: 'width: 10px' },
+        { name: 'valor', label: 'Valor venta', field: 'valor', sortable: true, style: 'width: 10px' },
+        { name: 'valor', label: 'Utilidad', field: 'valor', sortable: true, style: 'width: 10px' },
+        { name: 'valor', label: 'Ganancia percibida', field: 'valor', sortable: true, style: 'width: 10px' },
+
+        
       ],
       ticket: {
         detalleTickets: []

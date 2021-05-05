@@ -74,14 +74,17 @@ export default {
         },
         { name: 'estado', align: 'center', label: 'Estado', field: 'nombreEstado', sortable: true },
         { name: 'tipoCaja', label: 'Tipo de Caja', field: 'nombreTipoCaja' },
-        { name: 'valor', label: 'Valor', field: 'valor', sortable: true, style: 'width: 10px' },
+        { name: 'valor', label: 'Valor costo', field: 'valor', sortable: true, style: 'width: 10px' },
+        { name: 'valor', label: 'Valor venta', field: 'valor', sortable: true, style: 'width: 10px' },
+        { name: 'valor', label: 'Utilidad', field: 'valor', sortable: true, style: 'width: 10px' },
+        { name: 'valor', label: 'Ganancia percibida', field: 'valor', sortable: true, style: 'width: 10px' },
         { name: 'cantidadProducto', label: 'Cantidad de Productos', field: 'cantidadProducto' },
         { name: 'telefono', label: 'Telefono', field: 'telefono' },
         { name: 'email', label: 'Correo', field: 'email' },
         
         { name: 'direccion', label: 'Dirección', field: 'direccion' },
         { name: 'created_at', label: 'Fecha Ingreso', field: 'created_at', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) },
-        { name: 'entrega', label: 'Fecha Recepción', field: 'entrega', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) }
+        { name: 'entrega', label: 'Fecha Despacho', field: 'entrega', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) }
       ],
       columns2: [
         {
