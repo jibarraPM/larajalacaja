@@ -28,7 +28,7 @@ const routes = [{
             },
             {
                 name: 'mediopago',
-                path: '/mediopago',
+                path: '/mediopago/:id',
                 component: () =>
                     import ('pages/MedioPago.vue')
             },

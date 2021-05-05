@@ -2,10 +2,10 @@
   
   <q-page class="">
 
-    <h3 class="text-center">Detalles del Ticket  N#</h3>
+    <h3 class="text-center">Detalles del Ticket  N#{{ticket.id}}</h3>
 
       <div class="q-pa-md">
-    <q-card class="my-card">
+        <q-card class="my-card">
       <q-card-section>
         <div class="text-h6 text-center">Información Destacada</div>
       </q-card-section>
@@ -22,21 +22,21 @@
         <q-tab-panel name="uno">
           <div class="row">
         <div class="col">
-          Valor Venta: {{ticket.valor}}
+          Valor Venta: {{ticket.precioVenta}}
         </div>
         <div class="col">
-          Valor Costo: {{ticket.valor}}
+          Valor Costo: {{ticket.precioCompra}}
         </div>
         <div class="col">
-          Ganancia Neta: {{ticket.valor}}
+          Ganancia Neta: {{ticket.precioVenta-ticket.precioCompra}}
         </div>
       </div>
       <div class="row">
         <div class="col">
-          Ganancia Neta: {{ticket.valor}}
+          Ganancia Neta: {{ticket.precioVenta-ticket.precioCompra}}
         </div>
         <div class="col">
-          Porcentaje de utilidad: {{ticket.valor}}
+          Porcentaje de utilidad: {{ticket.utilidad}}
         </div>
         <div class="col">
           Cantidad Producto: {{ticket.cantidadProducto}}
@@ -183,6 +183,13 @@
           <q-td auto-width>
             <q-btn size="sm" color="primary" round dense @click="modalDetalle(props.cols[0].value)"  icon="edit"/>
             <q-btn size="sm" color="primary" round dense @click="modaldeleteDetalle(props.cols[0].value)" icon="delete"/>
+          </q-td>
+        
+          <q-td auto-width>
+            <q-img 
+              :src="fotos[props.cols[0].value]"
+              :ratio="1"
+            />
           </q-td>
           
           <q-td
@@ -332,20 +339,21 @@ export default {
           sortable: true
         },
         { name: 'nombre', align: 'center', label: 'Nombre', field: 'nombre', sortable: true },
-        { name: 'foto', align: 'center', label: 'Foto', field: 'foto', sortable: true },
         { name: 'cantidad', align: 'center', label: 'Cantidad', field: 'cantidad', sortable: true, },
-        { name: 'precio', align: 'center', label: 'Precio', field: 'precio', sortable: true },
         
-        { name: 'total', label: 'Valor costo', field: 'total', sortable: true, style: 'width: 10px' },
-        { name: 'valor', label: 'Valor venta', field: 'valor', sortable: true, style: 'width: 10px' },
-        { name: 'valor', label: 'Utilidad', field: 'valor', sortable: true, style: 'width: 10px' },
-        { name: 'valor', label: 'Ganancia percibida', field: 'valor', sortable: true, style: 'width: 10px' },
+        { name: 'precioCompra', label: 'Valor costo', field: 'precioCompra', sortable: true, style: 'width: 10px' },
+        { name: 'precioVenta', label: 'Valor venta', field: 'precioVenta', sortable: true, style: 'width: 10px' },
+        { name: 'utilidad', label: 'Utilidad', field: 'utilidad', sortable: true, style: 'width: 10px' },
+        { name: 'ganancia', label: 'Ganancia percibida', field: 'ganancia', sortable: true, style: 'width: 10px' },
+        { name: 'totalCompra', label: 'Total costo', field: 'totalCompra', sortable: true, style: 'width: 10px' },
+        { name: 'totalVenta', label: 'Total venta', field: 'totalVenta', sortable: true, style: 'width: 10px' },
 
         
       ],
       ticket: {
         detalleTickets: []
       },
+      fotos: [],
       opciones:[],
       producto: {
         nombre: null,
@@ -408,11 +416,20 @@ export default {
             nombreTipoCaja: element.get_tipo_caja.nombre,
             nombreEstado: element.get_estado.nombre,
             cantidadProducto: element.cantidadProducto,
-            valor: element.valor
+            precioCompra: element.precioCompra,
+            precioVenta: element.precioVenta,
+            utilidad: (((element.precioVenta/element.precioCompra)-1) *100).toFixed() + "%"
           };
           this.ticket.detalleTickets.forEach((detalle) => {
             detalle.nombre=detalle.get_producto.nombre
+            detalle.utilidad= (((detalle.precioVenta/detalle.precioCompra)-1) *100).toFixed() + "%";
+            detalle.ganancia= detalle.precioVenta-detalle.precioCompra;
+            detalle.foto= detalle.get_producto.foto;
+            detalle.totalCompra= detalle.precioCompra*detalle.cantidad;
+            detalle.totalVenta= detalle.precioVenta*detalle.cantidad;
+            this.fotos[detalle.id]= detalle.foto;
           });
+          console.log(this.fotos);
         }
       })
       .catch((error) => {
@@ -420,6 +437,7 @@ export default {
       });
     },
     modalDetalle(id){
+      console.log(id);
       this.idProductoEditar=id;
       this.modificar = true;
       this.ticket.detalleTickets.forEach((detalle) => {
@@ -429,7 +447,6 @@ export default {
           this.editproducto.precioCompra=detalle.get_producto.precioCompra;
           this.editproducto.cantidad=detalle.get_producto.cantidad;
           this.editproducto.precioVenta=detalle.get_producto.precioVenta;
-          this.editproducto.cantidad=detalle.get_producto.cantidad;
           this.editcantidad = detalle.cantidad;
         }
       });
@@ -440,8 +457,8 @@ export default {
         "ticket": this.$route.params.id,
         "producto": this.idProductoEditar,
         "cantidad": this.editcantidad,
-        "precio": this.editproducto.precioVenta,
-        "total": this.editproducto.precioVenta*this.editcantidad
+        "precioCompra": this.editproducto.precioCompra,
+        "precioVenta": this.editproducto.precioVenta
       };
       this.editproducto.id="";
       this.editproducto.nombre="";
@@ -534,13 +551,12 @@ export default {
     },
     agregarProducto(){
       var url = 'detalleTickets'
-      
       let post = {
         "ticket": this.$route.params.id,
         "producto": this.producto.id,
         "cantidad": this.cantidad,
-        "precio": this.producto.precioVenta,
-        "total": this.producto.precioVenta*this.cantidad,
+        "precioCompra": this.producto.precioCompra,
+        "precioVenta": this.producto.precioVenta,
       };
       this.idProducto="";
       this.producto.id="";

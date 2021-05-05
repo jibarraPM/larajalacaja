@@ -74,10 +74,10 @@ export default {
         },
         { name: 'estado', align: 'center', label: 'Estado', field: 'nombreEstado', sortable: true },
         { name: 'tipoCaja', label: 'Tipo de Caja', field: 'nombreTipoCaja' },
-        { name: 'valor', label: 'Valor costo', field: 'valor', sortable: true, style: 'width: 10px' },
-        { name: 'valor', label: 'Valor venta', field: 'valor', sortable: true, style: 'width: 10px' },
-        { name: 'valor', label: 'Utilidad', field: 'valor', sortable: true, style: 'width: 10px' },
-        { name: 'valor', label: 'Ganancia percibida', field: 'valor', sortable: true, style: 'width: 10px' },
+        { name: 'precioCompra', label: 'Valor costo', field: 'precioCompra', sortable: true, style: 'width: 10px' },
+        { name: 'precioVenta', label: 'Valor venta', field: 'precioVenta', sortable: true, style: 'width: 10px' },
+        { name: 'utilidad', label: 'Utilidad', field: 'utilidad', sortable: true, style: 'width: 10px' },
+        { name: 'ganancia', label: 'Ganancia percibida', field: 'ganancia', sortable: true, style: 'width: 10px' },
         { name: 'cantidadProducto', label: 'Cantidad de Productos', field: 'cantidadProducto' },
         { name: 'telefono', label: 'Telefono', field: 'telefono' },
         { name: 'email', label: 'Correo', field: 'email' },
@@ -98,8 +98,8 @@ export default {
         },
         { name: 'nombre', align: 'center', label: 'Nombre', field: 'nombre', sortable: true },
         { name: 'cantidad', align: 'center', label: 'Cantidad', field: 'cantidad', sortable: true, },
-        { name: 'precio', align: 'center', label: 'Precio', field: 'precio', sortable: true },
-        { name: 'total', align: 'center', label: 'Total', field: 'total', sortable: true }
+        { name: 'precioCompra', align: 'center', label: 'Precio Compra', field: 'precioCompra', sortable: true },
+        { name: 'precioVenta', align: 'center', label: 'Precio Venta', field: 'precioVenta', sortable: true },
       ],
       listaTicket:[]
     }
@@ -144,7 +144,10 @@ export default {
                   nombreTipoCaja: element.get_tipo_caja.nombre,
                   nombreEstado: element.get_estado.nombre,
                   cantidadProducto: element.cantidadProducto,
-                  valor: element.valor
+                  precioCompra: element.precioCompra,
+                  precioVenta: element.precioVenta,
+                  utilidad: (((element.precioVenta/element.precioCompra)-1) *100).toFixed() + "%",
+                  ganancia: element.precioVenta-element.precioCompra
               };
               ticket.detalleTickets.forEach((detalle) => {
                 detalle.nombre=detalle.get_producto.nombre

@@ -506,8 +506,8 @@
                       <div class="text-subtitle2">Datos de La Caja</div>
                     </q-card-section>
                     <div class="q-pa-md">
-                      <p>Motivo: {{ this.listaMotivos[motivo-1].nombre }}</p>
-                      <p>Para quien: {{ this.listaTipoPersonas[tipoPersona-1].nombre }}</p>
+                      <p>Motivo: {{this.listaMotivos[motivo-1].nombre}}</p>
+                      <p>Para quien: {{this.listaTipoPersonas[tipoPersona-1].nombre}}</p>
                       <p>Mensaje: {{ mensaje }}</p>
                       <p>Valor caja: ${{ listaTipoCajas[tipoCaja-1].precio }}</p>
                       <p>Costo de Despacho: ${{ 0 }}</p>
@@ -560,8 +560,8 @@ export default {
 
       receptor: "",
       receptor: "",
-      motivo: "",
-      tipoPersona: "",
+      motivo: 1,
+      tipoPersona: 1,
       nacimiento: "",
       color: "",
       edad: "",
@@ -603,8 +603,8 @@ export default {
       listaPreferenciasConSal:[],
       listaPreferenciasSinSal:[],
       listaMascotas:[],
-      listaMotivos:[],
-      listaTipoPersonas:[],
+      listaMotivos:[0],
+      listaTipoPersonas:[0],
       listaTipoCajas:[
         {
           precio: 0
@@ -714,14 +714,15 @@ export default {
       axios.post(url,post,this.obtenerConfig)
       .then((result)=>{
           if (result.data.success == true)  {
-            console.log(result);
             setTimeout(() => {
               notif({
                 type: 'positive',
                 message: result.data.message,
               })
             }, 0)
+            this.$router.push('mediopago/' + result.data.data.ticket.id);
           }
+
       })
       .catch((error)=>{
           setTimeout(() => {
