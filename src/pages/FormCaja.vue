@@ -249,7 +249,7 @@
                 <div class="q-pa-md">
                   <div class="q-gutter-sm">
                     <label v-for="brindi in listaBrindis">
-                      <q-checkbox 
+                      <q-radio
                         v-model="brindis"
                         :val="brindi.id"
                         :label="brindi.nombre"
@@ -473,6 +473,7 @@
                     <q-icon name="add_location" />
                   </template>
                 </q-input>
+                <p ><span>*</span> No nos hacemos responsables, asegurate de ingresar la dirección correctamente, no queremos que tu persona favorita quede sin su caja</p>
               </div>
             </q-card>
             <q-input
@@ -506,8 +507,8 @@
                       <div class="text-subtitle2">Datos de La Caja</div>
                     </q-card-section>
                     <div class="q-pa-md">
-                      <p>Motivo: {{ this.listaMotivos[motivo-1].nombre }}</p>
-                      <p>Para quien: {{ this.listaTipoPersonas[tipoPersona-1].nombre }}</p>
+                      <p>Motivo: {{listaMotivos[motivo-1].nombre}}</p>
+                      <p>Para quien: {{ this.listaTipoPersonas[tipoPersona-1] }}</p>
                       <p>Mensaje: {{ mensaje }}</p>
                       <p>Valor caja: ${{ listaTipoCajas[tipoCaja-1].precio }}</p>
                       <p>Costo de Despacho: ${{ 0 }}</p>
@@ -560,8 +561,8 @@ export default {
 
       receptor: "",
       receptor: "",
-      motivo: "",
-      tipoPersona: "",
+      motivo: 1,
+      tipoPersona: 1,
       nacimiento: "",
       color: "",
       edad: "",

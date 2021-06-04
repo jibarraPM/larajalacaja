@@ -8,6 +8,33 @@
     <q-card class="my-card">
       <q-card-section>
         <div class="text-h6 text-center">Información Destacada</div>
+
+         <q-markup-table>
+
+        <tbody>
+          <tr>
+            <td class="text-center">Valor de la Caja</td>
+            <td class="text-center">$29.990</td>
+
+          </tr>
+          <tr>
+            <td class="text-center">Estado</td>
+            <td class="text-center">Pagado</td>
+
+          </tr>
+          <tr>
+            <td class="text-center">Fecha de Despacho</td>
+            <td class="text-center">262</td>
+
+          </tr>
+          <tr>
+            <td class="text-center">Forma de Pago</td>
+            <td class="text-center">Deposito</td>
+
+          </tr>
+
+        </tbody>
+      </q-markup-table>
       </q-card-section>
 
       <q-tabs v-model="info" class="text-teal">
@@ -20,132 +47,162 @@
 
       <q-tab-panels v-model="info" animated>
         <q-tab-panel name="uno">
-          <div class="row">
-        <div class="col">
-          Valor Venta: {{ticket.valor}}
-        </div>
-        <div class="col">
-          Valor Costo: {{ticket.valor}}
-        </div>
-        <div class="col">
-          Ganancia Neta: {{ticket.valor}}
-        </div>
-      </div>
-      <div class="row">
-        <div class="col">
-          Ganancia Neta: {{ticket.valor}}
-        </div>
-        <div class="col">
-          Porcentaje de utilidad: {{ticket.valor}}
-        </div>
-        <div class="col">
-          Cantidad Producto: {{ticket.cantidadProducto}}
-        </div>
-      </div>
-      <div class="row">
-        <div class="col">
-          Pyme: {{ticket.pyme}}
-        </div>
-        <div class="col">
-          Impustos %: {{ticket.valor}}
-        </div>
-        <div class="col">
-          Costo Envio: {{ticket.telefono}}
-        </div>
-      </div>
-      <div class="row">
-        <div class="col">
-          Forma de Pago: {{ticket.pyme}}
-        </div>
-        <div class="col">
-          Estado del Pago: {{ticket.pyme}}
-        </div>
-        <div class="col">
-          
-        </div>
-      </div>
+          <q-markup-table>
+
+        <tbody>
+                    <tr>
+            <td class="text-left">Valor Costo</td>
+            <td class="text-right">237</td>
+
+          </tr>
+          <tr>
+            <td class="text-left">Valor Percibido</td>
+            <td class="text-right">$</td>
+
+          </tr>
+
+          <tr>
+            <td class="text-left">Margen Neta</td>
+            <td class="text-right">262</td>
+
+          </tr>
+          <tr>
+            <td class="text-left">% Margen Neto</td>
+            <td class="text-right">305</td>
+
+          </tr>
+          <tr>
+            <td class="text-left">Venta Neta</td>
+            <td class="text-right">356</td>
+
+          </tr>
+          <tr>
+            <td class="text-left">IVA</td>
+            <td class="text-right">356</td>
+
+          </tr>
+          <tr>
+            <td class="text-left">Pyme</td>
+            <td class="text-right">356</td>
+
+          </tr>
+
+        </tbody>
+      </q-markup-table>
+
         </q-tab-panel>
 
         <q-tab-panel name="dos">
-          <div class="row">
-        <div class="col">
-          Email: {{ ticket.email}}
-        </div>
-        <div class="col">
-          Receptor: {{ ticket.receptor}}
-        </div>
-        <div class="col">
-          Emisor: {{ ticket.emisor}}
-        </div>
-      </div>
-      <div class="row">
-        <div class="col">
-          Nacimiento: {{ticket.nacimiento}}
-        </div>
-        <div class="col">
-          Color: {{ticket.color}}
-        </div>
-        <div class="col">
-          Excepcion: {{ticket.excepcion}}
-        </div>
 
-      </div>
-      <div class="row">
-        
-        <div class="col">
-          Mensaje: {{ticket.mensaje}}
-        </div>
-        
-        <div class="col"></div>
-      </div>
+                    <q-markup-table>
+
+        <tbody>
+                    <tr>
+            <td class="text-left">Nombre Cliente</td>
+            <td class="text-right">262</td>
+
+          </tr>
+          <tr>
+            <td class="text-left">Telefono Cliente</td>
+            <td class="text-right">$</td>
+
+          </tr>
+          <tr>
+            <td class="text-left">Email</td>
+            <td class="text-right">$</td>
+
+          </tr>
+          <tr>
+            <td class="text-left">Nombre de Quién Recibe</td>
+            <td class="text-right">237</td>
+
+          </tr>
+          <tr>
+            <td class="text-left">Teléfono de Quién recibe</td>
+            <td class="text-right">$</td>
+
+          </tr>
+          <tr>
+            <td class="text-left">Dirección de Quién recibe</td>
+            <td class="text-right">$</td>
+
+          </tr>
+
+          <tr>
+            <td class="text-left">Nacimiento</td>
+            <td class="text-right">305</td>
+
+          </tr>
+          <tr>
+            <td class="text-left">Edad</td>
+            <td class="text-right">356</td>
+
+          </tr>
+          <tr>
+            <td class="text-left">Color</td>
+            <td class="text-right">356</td>
+
+          </tr>
+          <tr>
+            <td class="text-left">Excepcion</td>
+            <td class="text-right">356</td>
+
+          </tr>
+          <tr>
+            <td class="text-left">Mensaje</td>
+            <td class="text-right">356</td>
+
+          </tr>
+
+        </tbody>
+      </q-markup-table>
+
         </q-tab-panel>
         <q-tab-panel name="tres">
-          <div class="row">
-          <div class="col">
-          Costo Envio: {{ticket.telefono}}
-        </div>
-        <div class="col">
-          Telefono: {{ticket.telefono}}
-        </div>
-        
-        <div class="col">
-          Fecha de Despacho: {{ticket.entrega}}
-        </div>
-        
-      </div>
-      <div class="row">
-        <div class="col">
-          Despacho Operador: {{ticket.region}}
-        </div>
-        <div class="col">
-          Costo Despacho: {{ticket.comuna}}
-        </div>
-        <div class="col">
-          Valor Despacho: {{ticket.dºireccion}}
-        </div>
-      </div>
-      <div class="row">
-        <div class="col">
-          Finacia el Despacho: {{ticket.region}}
-        </div>
-        <div class="col">
-          Estado del Despacho: {{ticket.comuna}}
-        </div>
-        <div class="col">
-          
-        </div>
-      </div>
-      <div class="row">
-        <div class="col">
-          Region: {{ticket.region}}
-        </div>
-        <div class="col">
-          Comuna: {{ticket.comuna}}
-        </div>
-        <div class="col">
-          Direccion: {{ticket.dºireccion}}
-        </div>
-      </div>
+
+                    <q-markup-table>
+
+        <tbody>
+          <tr>
+            <td class="text-left">Costo de Envio</td>
+            <td class="text-right">$</td>
+
+          </tr>
+          <tr>
+            <td class="text-left">Valor Real</td>
+            <td class="text-right">237</td>
+
+          </tr>
+          <tr>
+            <td class="text-left">Margen de Despacho</td>
+            <td class="text-right"></td>
+
+          </tr>
+          <tr>
+            <td class="text-left">Financiamineto Interno</td>
+            <td class="text-right">305</td>
+
+          </tr>
+
+          <tr>
+            <td class="text-left">Region</td>
+            <td class="text-right">356</td>
+
+          </tr>
+          <tr>
+            <td class="text-left">Comuna</td>
+            <td class="text-right">356</td>
+
+          </tr>
+          <tr>
+            <td class="text-left">Direccion</td>
+            <td class="text-right">356</td>
+
+          </tr>
+
+        </tbody>
+      </q-markup-table>
+
         </q-tab-panel>
       </q-tab-panels>
     </q-card>
